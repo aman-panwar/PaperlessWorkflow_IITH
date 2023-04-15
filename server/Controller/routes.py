@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-
-@app.route('/async/get', methods=['GET'])
+#  Flask boilerplate
+@app.route('/async/get', methods=['GET']) # called when a GET request is sent to "http://localhost:5000/async/get"
 def handle_get():
     return jsonify({'message': 'Async get works!'})
 
@@ -14,3 +14,5 @@ def handle_post():
 
 if __name__ == "__main__":
     app.run(host='localhost', port=5000)
+
+
