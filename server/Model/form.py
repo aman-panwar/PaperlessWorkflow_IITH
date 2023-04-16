@@ -18,16 +18,7 @@ class Form:
         field_meta=self.cur_level(field_index)
         #Later replace by meta classes ,for now dum dum if else
         
-        if field_meta[1]=="textbox":
-            field_entry=fields.Textbox(field_meta[0],val)
-        elif field_meta[1]=="date":
-            field_entry=fields.Date(field_meta[0],val)
-        elif field_meta[1]=="dropdown":
-            field_entry=fields.Dropdown(field_meta[0],field_meta[2],val)
-        elif field_meta[1]=="file":
-            field_entry=fields.File(field_meta[0],val)
-        else :
-            raise Exception("INVALID FIELD VALUE")
+        field_entry=fields.FieldFactory(field_meta,val)
         self.log.append((time.time(),u_id,self.cur_level.get_level_no(),field_index,field_entry))
         # Should be something like Field(type,val)
 

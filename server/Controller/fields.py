@@ -88,3 +88,16 @@ class File(Field):
     def __str__(self):
         return f'File "{self.display_name}"' #+ f': Path = {self.value}'
 
+def FieldFactory(field_meta,val) -> Field:
+    field_entry=False
+    if field_meta[1]=="textbox":
+        field_entry=Textbox(field_meta[0],val)
+    elif field_meta[1]=="date":
+        field_entry=Date(field_meta[0],val)
+    elif field_meta[1]=="dropdown":
+        field_entry=Dropdown(field_meta[0],field_meta[2],val)
+    elif field_meta[1]=="file":
+        field_entry=File(field_meta[0],val)
+    else :
+        raise Exception("INVALID FIELD VALUE")
+    return field_entry
