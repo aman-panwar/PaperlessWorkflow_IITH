@@ -1,6 +1,7 @@
 import json
+import os
 
-filepath = "../Controller/forminfo.json"
+filepath = os.path.dirname(os.path.abspath(__file__))+"/forminfo.json"
 class FormMetaData:
     """
     Contains metadata for every form instance.
@@ -33,11 +34,14 @@ class FormMetaData:
 
     def get_level(self,index):
         return self.users[index],self.req_fields[index]
+    
+    def get_field_cnt_at_level(self,index):
+        return len(self.req_fields[index])
 
 # Testing code
-f = FormMetaData("leave")
-print(f.form_uid)
-print(f.display_name)
-print(f.n_levels)
-print(f.users[2])
-print(f.req_fields[2])
+# f = FormMetaData("leave")
+# print(f.form_uid)
+# print(f.display_name)
+# print(f.n_levels)
+# print(f.users[2])
+# print(f.req_fields[2])
