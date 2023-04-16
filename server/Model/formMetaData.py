@@ -31,6 +31,8 @@ class FormMetaData:
             self.users[i] = level["users"]
             self.req_fields[i] = level["req_fields"]
 
+    def get_level(self,index):
+        return self.users[index],self.req_fields[index]
 
 # Testing code
 f = FormMetaData("leave")
