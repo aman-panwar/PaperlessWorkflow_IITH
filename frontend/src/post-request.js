@@ -1,7 +1,6 @@
-
 window.onload = () => {
-  document.getElementById('post-form').addEventListener('submit', (event) => {
-    form = FormData(event.target);
-    console.log(form)
+  document.getElementById('postform').addEventListener('submit', (event) => {
+    const form = FormData(event.target);
+    console.log(form);
   })
 }
