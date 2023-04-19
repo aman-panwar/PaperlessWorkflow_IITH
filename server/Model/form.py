@@ -41,6 +41,8 @@ class Form:
         print(ret)#IDK why this guy doesnt use the TExtbox print method,probably some inheritance bs
         return ret
 
+    def save_to_db() -> bool:
+        pass
 def main():
     print("hey there")
     f = FormMetaData("leave")
