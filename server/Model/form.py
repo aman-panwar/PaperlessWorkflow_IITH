@@ -9,13 +9,12 @@ from datetime import date
 import fields
 class Form:
 
-    def __init__(self,_ID,_form_type : FormMetaData) -> None:
+    def __init__(self,_ID,_form_type : FormMetaData,submitter_id :str) -> None:
         self.ID=_ID
         self.form_type=_form_type
         self.cur_level=Level(*self.form_type.get_level(0),[],0)#Get 0th layer from metadata
         self.data=Data()
-
-        pass
+        self.applicant_id=submitter_id
 
     def fill_field(self,field_index,u_id,val) -> None:
         # if field_id not in valid_fields:
