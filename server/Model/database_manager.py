@@ -22,7 +22,8 @@ class DbManager(metaclass = SingletonMetaClass):
         ... 
     """
     class ClientWrapper:
-        """a context managing class. sole purpose of this class is to allow DbManager.get_client() to be used in a 'with' statement"""
+        """a context managing class. sole purpose of this class is to
+          allow DbManager.get_client() to be used in a 'with' statement"""
         def __init__(self, client) -> None:
             self.client = client
         def __enter__(self):
@@ -63,7 +64,6 @@ class DbManager(metaclass = SingletonMetaClass):
 #       intended use        #
 #############################
 # with DbManager().get_client() as c:
-#     db = c.get_database('PaperlessWorkflow')
-#     coll = db.get_collection('Forms')
-#     for x in coll.find({"_id":"643ff5dd326f4d6638bea447"}):
+#     forms = c['PaperlessWorkflow']['Forms']
+#     for x in forms.find({"_id":"643ff5dd326f4d6638bea447"}):
 #         print(x)

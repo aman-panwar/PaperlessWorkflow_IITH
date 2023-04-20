@@ -1,10 +1,15 @@
 import time
 from formMetaData import FormMetaData
 from level import Level
+import pymongo
+from database_manager import DbManager
+import json
+
 # import sys
 # sys.path.insert(1, '/home/ojjas/PaperlessWorkflow_IITH/server/Controller')
 # print(sys.path)
 # from Controller import fields 
+
 import fields
 class Form:
 
@@ -14,6 +19,15 @@ class Form:
         self.cur_level=Level(*self.form_type.get_level(0),[],0)#Get 0th layer from metadata
         self.log=[]
 
+        with DbManager().get_client() as c:
+            forms = c['PaperlessWorkflow']['Forms']
+            if c.PaperlessWorkflow.Forms.count_documents({"_id":id}, limit=1)>0:
+                print('found')
+            else:
+                print('not found')
+    
+    def save_to_db(self):
+        #print(json.dumps(self.__dict__))
         pass
 
     def update(self,field_index,u_id,val) -> None:
@@ -40,9 +54,6 @@ class Form:
                 ret[kee]=(ele[0],ele[4])
         print(ret)#IDK why this guy doesnt use the TExtbox print method,probably some inheritance bs
         return ret
-
-    def save_to_db() -> bool:
-        pass
 def main():
     print("hey there")
     f = FormMetaData("leave")
@@ -52,7 +63,10 @@ def main():
     F_instance.update(0,"Pojeshawar","Pojus")
     F_instance.get_form_info(2)
     print(F_instance.log[0][-1])
-  
+    F_instance.save_to_db()
 if __name__=="__main__":
     main()
 
+# '_id': '643ff5dd326f4d6638bea447'
+
+# a = Form('643ff5dd326f4d6638bea447')
