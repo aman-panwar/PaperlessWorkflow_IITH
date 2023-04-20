@@ -3,6 +3,21 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Navbar from './Navbar'
 
+function App() {
+  return(
+    <>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path='/' element={<Dashboard />}/>
+        <Route exact path='/login' element={<Login navbar={<Navbar/>}/>}/>
+      </Routes>
+    </BrowserRouter>
+    </>
+  );
+};
+
+export default App
+
 // function App() {
 //   const [data, setData] = useState([{}])
 
@@ -48,18 +63,3 @@ import Navbar from './Navbar'
 //     </div>
 //   )
 // }
-
-function App() {
-  return(
-    <>
-    <BrowserRouter>
-      <Routes>
-        <Route exact path='/' element={<Dashboard navbar={<Navbar/>}/>}/>
-        <Route exact path='/login' element={<Login navbar={<Navbar/>}/>}/>
-      </Routes>
-    </BrowserRouter>
-    </>
-  );
-};
-
-export default App

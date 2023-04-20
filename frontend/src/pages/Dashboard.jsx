@@ -1,13 +1,10 @@
 import React from 'react';
-import Navbar from '../Navbar'
+// import Navbar from '../Navbar'
 
 function Dashboard() {
 
     return(
-        <>
-        <Navbar/>
-        <h1>This is the Dashboard</h1>
-        </>
+        <div className='app'></div>
     );
 }
 
