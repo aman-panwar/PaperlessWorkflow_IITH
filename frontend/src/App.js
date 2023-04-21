@@ -1,17 +1,26 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Navbar from './Navbar'
+import { ColorModeContext, useMode } from './theme'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 
 function App() {
+  const [theme, colorMode] = useMode()
   return(
     <>
-    <BrowserRouter>
-      <Routes>
-        <Route exact path='/' element={<Dashboard />}/>
-        <Route exact path='/login' element={<Login navbar={<Navbar/>}/>}/>
-      </Routes>
-    </BrowserRouter>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/*' element={<Navigate to="/"/>} />
+              <Route exact path='/' element={<Dashboard />}/>
+              <Route exact path='/login' element={<Login navbar={<Navbar/>}/>}/>
+            </Routes>
+          </BrowserRouter>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
     </>
   );
 };

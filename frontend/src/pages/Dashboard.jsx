@@ -1,10 +1,14 @@
 import React from 'react';
-// import Navbar from '../Navbar'
+import Navbar from '../scenes/global/Navbar';
 
 function Dashboard() {
 
     return(
-        <div className='app'></div>
+        <div className='app'>
+            <main className='content'>
+                <Navbar/>
+            </main>
+        </div>
     );
 }
 
