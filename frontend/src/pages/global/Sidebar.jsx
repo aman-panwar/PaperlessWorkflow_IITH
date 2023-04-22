@@ -121,35 +121,35 @@ const Sidebar = () => {
             </Typography> */}
             <Item
                 title="Home"
-                to="/"
+                to="/home"
                 icon={<HomeIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
             />
             <Item
                 title="Admin"
-                to="/"
+                to="/admin"
                 icon={<AdminPanelSettingsIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
             />
             <Item
                 title="Submit Form"
-                to="/"
+                to="/form"
                 icon={<AddIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
             />
             <Item
                 title="Table"
-                to="/"
+                to="/table"
                 icon={<ViewListIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
             />
             <Item
                 title="FAQ"
-                to="/"
+                to="/FAQ"
                 icon={<QuizIcon/>}
                 selected={selected}
                 setSelected={setSelected} 

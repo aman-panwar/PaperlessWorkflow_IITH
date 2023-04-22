@@ -1,13 +1,13 @@
 import Header from '../../components/Header';
 import { Box } from '@mui/material';
 
-const Admin = () => {
+const Form = () => {
     return (
         <Box m="20px">
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Header
-                    title="Admin"
-                    subtitle="This is the Admin Panel"
+                    title="FORM"
+                    subtitle="Enter the details and submit the form."
                 />
             </Box>
         </Box>
@@ -15,4 +15,4 @@ const Admin = () => {
     
 }
 
-export default Admin;
+export default Form;

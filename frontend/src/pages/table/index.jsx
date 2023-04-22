@@ -6,7 +6,7 @@ const Table = () => {
         <Box m="20px">
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Header
-                    title="Table"
+                    title="TABLE"
                     subtitle="List of active forms"
                 />
             </Box>

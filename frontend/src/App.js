@@ -1,26 +1,43 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Dashboard from './pages/Dashboard'
-import Login from './pages/Login'
-import Home from './scenes/home'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
+import Topbar from './pages/global/Topbar';
+import Sidebar from './pages/global/Sidebar';
+import Login from './pages/login';
+import Home from './pages/home'
+import Admin from './pages/admin';
+import FAQ from './pages/FAQ';
+import Form from './pages/form';
+import Table from './pages/table';
+
 // import Topbar from './Topbar'
 import { ColorModeContext, useMode } from './theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 
 function App() {
   const [theme, colorMode] = useMode()
+  const location = useLocation();
+  const isLogin = location.pathname.startsWith('/login');
+
   return(
     <>
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline/>
-          <BrowserRouter>
-            <Routes>
-              {/* <Route path='/*' element={<Navigate to="/"/>} /> */}
-              <Route exact path='/' element={<Dashboard/>}/>
-              <Route exact path='/login' element={<Login/>}/>
-              {/* <Route path="/home" element={<Home/>} /> */}
-            </Routes>
-          </BrowserRouter>
+          <div className='app'>
+            {!isLogin ? <Sidebar/> : <></>} 
+            <main className='content'>
+              {!isLogin ? <Topbar/> : <></>}
+                <Routes>
+                    <Route path="/*" element={<Navigate to="/"/>} />
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/admin" element={<Admin/>} />
+                    <Route path="/FAQ" element={<FAQ/>} />
+                    <Route path="/form" element={<Form/>} />
+                    <Route path="/table" element={<Table/>} />
+
+                    <Route path="/login" element={<Login/>} />
+                </Routes>
+            </main>
+          </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
     </>
