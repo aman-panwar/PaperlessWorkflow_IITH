@@ -4,11 +4,12 @@ class User:
         self.pending_approvals=[]
         self.submitted_forms=[]
         self.notifications=True
-        self.not_freq="Daily"
+        self.not_freq="DAILY"
+        self.role="APPLICANT"
 
     def change_not_freq(self,new_freq):
-        valid_list=["Daily","Weekly","Per_Form"]
-        if new_freq in valid_list:
+        valid_options=["DAILY","WEEKLY","PER_FORM"]
+        if new_freq in valid_options:
             self.not_freq=new_freq
         else:
             raise Exception("Invalid frequency selected")
@@ -18,7 +19,14 @@ class User:
             self.notifications=True
         else:
             self.notifications=False
-            
+
+    def set_user_role(self,role):
+        valid_options=["APPLICANT","OFFICER","ADMIN"]
+        if role in valid_options:
+            self.role=role
+        else:
+            raise Exception("Invalid role selected")
+        
     def get_user_info() -> dict:
         '''Return the user info as a json dictionary.'''
         pass

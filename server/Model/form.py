@@ -10,10 +10,10 @@ import fields
 
 from enum import Enum
 
-class FORM_STATUS(Enum):
-    IN_PROCESS=0
-    REJECTED=1
-    ACCEPTED=2
+# class FORM_STATUS(Enum):
+#     IN_PROCESS=0
+#     REJECTED=1
+#     ACCEPTED=2
 
 class Form:
 
@@ -24,7 +24,7 @@ class Form:
         self.cur_level=Level(*self.form_type.get_level(0),[],0)#Get 0th layer from metadata
         self.data=Data()
         self.applicant_id=submitter_id
-        self.status= FORM_STATUS.IN_PROCESS
+        self.status= "IN_PROCESS"
 
     def fill_field(self,field_index,u_id,val) -> None:
         # if field_id not in valid_fields:
