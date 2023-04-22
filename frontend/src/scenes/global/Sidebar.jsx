@@ -1,5 +1,165 @@
+import { useState } from 'react';
+import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
+// import '../../../node_modules/react-pro-sidebar/dist/styles';
+import 'react-pro-sidebar/dist/css/styles.css'
+import { Box, IconButton, ListItemIcon, Typography, useTheme } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { tokens } from '../../theme';
+
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import QuizIcon from '@mui/icons-material/Quiz';
+import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+
+const Item = ( {title, to, icon, selected, setSelected}) => {
+    const theme = useTheme()
+    const colors = tokens(theme.palette.mode);
+    return(
+        <MenuItem 
+            active={selected === title} 
+            style = {{ color: colors.grey[100]}} 
+            onClick={()=> setSelected(title)}
+            icon = {icon}>
+            <Typography>{title}</Typography>
+            <Link to={to}/>
+        </MenuItem>
+    )
+}
 const Sidebar = () => {
-    return <div>Sidebar</div>
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [selected, setSelected] = useState("Dashboard");
+
+
+    return (
+        <Box
+            sx ={{
+                "& .pro-sidebar-inner": {
+                    background: `${colors.primary[400]} !important`,
+                },
+                "& .pro-icon-wrapper": {
+                    backgroundColor: "transparent !important",
+                },
+                "& .pro-inner-item": {
+                    padding: "5px 35px 5px 20px !important",
+                },
+                "& .pro-inner-item:hover": {
+                    color: "#868dfb !important",
+                },
+                "& .pro-menu-item.active": {
+                    color: "#6870fa !important",
+                }
+            }}
+        >
+        <ProSidebar collapsed={isCollapsed}>
+        <Menu iconShape="square">
+          {/* LOGO AND MENU ICON */}
+          <MenuItem
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+            style={{
+              margin: "10px 0 20px 0",
+              color: colors.grey[100],
+            }}
+          >
+            {!isCollapsed && (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                ml="15px"
+              >
+                <Typography variant="h3" color={colors.grey[100]}>
+                  {/* PAPERLESS <br></br> WORKFLOW */}
+                  DASHBOARD
+                </Typography>
+                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                  <MenuOutlinedIcon />
+                </IconButton>
+              </Box>
+            )}
+          </MenuItem>
+
+        {/* USER */}
+        {!isCollapsed && (
+            <Box mb="25px">
+                <Box display="flex" justifyContent="center" alignItems="center">
+                    <img
+                        alt="profile-user"
+                        width="100px"
+                        height="100px"
+                        src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+                        style={{ cursor: "pointer", borderRadius: "50%"}}
+                    />
+                </Box>
+                <Box textAlign="center">
+                    <Typography 
+                        variant="h2" 
+                        colors={colors.grey[100]} 
+                        frontWeight="bold" 
+                        sx={{ m: "10px 0 0 0"}}
+                    > Shreya Kumar</Typography>
+                    <Typography
+                        variant="h5"
+                        color={colors.greenAccent[500]}
+                    > es20btech11026@iith.ac.in</Typography>
+                </Box>
+            </Box>
+        )}
+
+        {/* Navigate to diff pages */}
+        <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+            {/* <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Extra heading
+            </Typography> */}
+            <Item
+                title="Home"
+                to="/"
+                icon={<HomeIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+            />
+            <Item
+                title="Admin"
+                to="/"
+                icon={<AdminPanelSettingsIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+            />
+            <Item
+                title="Submit Form"
+                to="/"
+                icon={<AddIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+            />
+            <Item
+                title="Table"
+                to="/"
+                icon={<ViewListIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+            />
+            <Item
+                title="FAQ"
+                to="/"
+                icon={<QuizIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+            />
+            
+        </Box>
+        </Menu>
+        </ProSidebar>
+        </Box>
+    );
 }
 
 export default Sidebar;

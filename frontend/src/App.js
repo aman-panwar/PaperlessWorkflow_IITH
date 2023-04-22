@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
-import Navbar from './Navbar'
+import Home from './scenes/home'
+// import Topbar from './Topbar'
 import { ColorModeContext, useMode } from './theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 
@@ -14,9 +15,10 @@ function App() {
         <CssBaseline/>
           <BrowserRouter>
             <Routes>
-              <Route path='/*' element={<Navigate to="/"/>} />
-              <Route exact path='/' element={<Dashboard />}/>
-              <Route exact path='/login' element={<Login navbar={<Navbar/>}/>}/>
+              {/* <Route path='/*' element={<Navigate to="/"/>} /> */}
+              <Route exact path='/' element={<Dashboard/>}/>
+              <Route exact path='/login' element={<Login/>}/>
+              {/* <Route path="/home" element={<Home/>} /> */}
             </Routes>
           </BrowserRouter>
       </ThemeProvider>

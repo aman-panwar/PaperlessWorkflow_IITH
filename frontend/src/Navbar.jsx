@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-function Navbar() {
+function Topbar() {
     return (
       <nav>
             <Link to="/">Dashboard</Link><span>|</span>
@@ -10,4 +10,4 @@ function Navbar() {
     );
   };
 
-export default Navbar;
+export default Topbar;
