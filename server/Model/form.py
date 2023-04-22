@@ -7,14 +7,24 @@ from datetime import date
 # print(sys.path)
 # from Controller import fields 
 import fields
+
+from enum import Enum
+
+class FORM_STATUS(Enum):
+    IN_PROCESS=0
+    REJECTED=1
+    ACCEPTED=2
+
 class Form:
 
     def __init__(self,_ID,_form_type : FormMetaData,submitter_id :str) -> None:
         self.ID=_ID
         self.form_type=_form_type
+        self.cur_level_no=0
         self.cur_level=Level(*self.form_type.get_level(0),[],0)#Get 0th layer from metadata
         self.data=Data()
         self.applicant_id=submitter_id
+        self.status= FORM_STATUS.IN_PROCESS
 
     def fill_field(self,field_index,u_id,val) -> None:
         # if field_id not in valid_fields:
@@ -22,9 +32,26 @@ class Form:
         field_meta=self.cur_level.get_field_at(field_index)
         
         field_entry=fields.FieldFactory(field_meta,val)
+        self.data.append_field(u_id, self.cur_level.get_level_no() ,field_index ,field_entry)
 
-        self.data.append(u_id, self.cur_level.get_level_no() ,field_index ,field_entry)
-        # Should be something like Field(type,val)
+    # def approve_to_next_lvl(self,approver_id,remarks):
+    #     self.cur_level_no+=1
+    #     if self.form_type.n_levels>=self.cur_level_no:
+    #         self.status=FORM_STATUS.ACCEPTED
+    #         self.data.append_approval(approver_id,self.cur_level_no-1,"ACCEPTED",remarks)
+    #     else:
+    #         users,fields=self.form_type.get_level(self.cur_level_no)
+    #         self.cur_level=Level(users,fields,users,self.cur_level_no)
+    #         self.data.append_approval(approver_id,self.cur_level_no-1,"APPROVED",remarks)
+
+    # def flag_to_previous(self,approver_id,remarks):
+    #     self.cur_level_no-=1
+    #     if self.cur_level_no==0:
+            
+
+    # def reject_form(self,approver_id,remarks):
+    #     self.status=FORM_STATUS.REJECTED
+    #     self.data.append_approval(approver_id,self.cur_level_no,"REJECTED",remarks)
 
     def get_form_info(self) ->dict:
         self.data.get_form_state()

@@ -11,8 +11,9 @@ class Data:
             data (str, optional): _description_. Defaults to "".
         """
         self.log=[]
+        self.approval_log=[]
 
-    def append(self,u_id : str,level_no :int ,field_index:int ,field_entry: Field):
+    def append_field(self,u_id : str,level_no :int ,field_index:int ,field_entry: Field):
         """_summary_
 
         Args:
@@ -23,6 +24,9 @@ class Data:
         """
         self.log.append((time.time(),u_id, level_no ,field_index ,field_entry))
 
+    def append_approval(self,u_id:str,level_no:int,action: str,remarks: str):
+        self.approval_log.append((time.time(),u_id,level_no,action,remarks))
+    
     def get_form_state(self)->dict:
         """return the cur state of form instance
 
@@ -37,7 +41,6 @@ class Data:
                     ret[kee]=(ele[0],ele[4])
             else:
                 ret[kee]=(ele[0],ele[4])
-        print(ret)
         return ret
     
     def get_log(self)->list:
@@ -47,6 +50,9 @@ class Data:
             list: the object log
         """
         return self.log
+    
+    def get_approval_log(self)->list:
+        return self.approval_log
     
     def get_update_cnt(self)->int:
         return len(self.log)
