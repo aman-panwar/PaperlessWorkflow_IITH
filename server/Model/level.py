@@ -3,7 +3,7 @@ class Level:
     def __init__(self,_users_id=None,_fields=None,_approvers_id=None,_lvl_no=None, json_str = None) -> None:
         if json_str==None:
             self.fields=_fields
-            self.total_fields=len(_fields)
+            self.total_fields=len(_fields) if _fields != None else None
             self.u_id=_users_id
             self.a_id=_approvers_id
             self.lvl=_lvl_no

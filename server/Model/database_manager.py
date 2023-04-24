@@ -1,6 +1,7 @@
 from queue import Queue
 from threading import Lock
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 class SingletonMetaClass(type):
     my_instances = {}
@@ -15,15 +16,13 @@ class SingletonMetaClass(type):
 
 class DbManager(metaclass = SingletonMetaClass):
     """An thread safe singleton object pool class for MongoClient.client
-
     Intended use:\n
     with DbManager().get_client() as c:
         c.get_database('example)\n
         ... 
     """
     class ClientWrapper:
-        """a context managing class. sole purpose of this class is to
-          allow DbManager.get_client() to be used in a 'with' statement"""
+        """a context managing class. sole purpose of this class is to allow DbManager.get_client() to be used in a 'with' statement"""
         def __init__(self, client) -> None:
             self.client = client
         def __enter__(self):
@@ -42,10 +41,8 @@ class DbManager(metaclass = SingletonMetaClass):
         self.lock = Lock()
     def get_client(self):
         """returns a client wrapper object containing the MongoClient
-
         Returns:
             a ClientWrapper obj.
-
         to get MongoClient obj\n
         client =  ClientWrapper() or client = ClientWrapper().client
         """
@@ -59,11 +56,12 @@ class DbManager(metaclass = SingletonMetaClass):
             with self.lock:
                 self.clientQ.put(client)
 
-
 #############################
 #       intended use        #
-#############################
+#############################        
 # with DbManager().get_client() as c:
 #     forms = c['PaperlessWorkflow']['Forms']
-#     for x in forms.find({"_id":"643ff5dd326f4d6638bea447"}):
-#         print(x)
+#     obj = forms.find_one({"_id" : ObjectId('643ff5dd326f4d6638bea447')})
+#     print(type(obj))
+#     for x in obj:
+#         print(f"{x} ({type(obj[x])}): {obj[x]}")
