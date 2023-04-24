@@ -1,18 +1,29 @@
 import time
+import json
 from fields import Field
 class Data:
     """Holds the log value as json
 
     """
-    def __init__(self,data: str = "") -> None:
+    def __init__(self,data: str = "", json_str:str = None ) -> None:
         """initializes the data object
 
         Args:
             data (str, optional): _description_. Defaults to "".
         """
-        self.log=[]
-        self.approval_log=[]
-
+        if json_str == None:
+            self.log=[]
+            self.approval_log=[]
+        else:
+            json_dict = json.loads(json_str)
+            self.log = json_dict['log']
+            self.approval_log=json_dict['approval_log']
+    def to_json(self):
+        json_dict = {}
+        json_dict["log"] = self.log
+        json_dict["approval_log"] = self.approval_log
+        return json.dumps(json_dict)
+    
     def append_field(self,u_id : str,level_no :int ,field_index:int ,field_entry: Field):
         """_summary_
 
