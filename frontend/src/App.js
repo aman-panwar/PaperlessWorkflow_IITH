@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Topbar from './pages/global/Topbar';
+import LoginTopbar from './pages/login/LoginTopbar'
 import Sidebar from './pages/global/Sidebar';
 import Login from './pages/login';
 import Home from './pages/home'
@@ -25,7 +26,7 @@ function App() {
           <div className='app'>
             {!isLogin ? <Sidebar/> : <></>} 
             <main className='content'>
-              {!isLogin ? <Topbar/> : <></>}
+              {!isLogin ? <Topbar/> : <LoginTopbar/>}
                 <Routes>
                     <Route path="/*" element={<Navigate to="/"/>} />
                     <Route path="/" element={<Home/>} />
