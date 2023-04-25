@@ -5,10 +5,14 @@ import { DataGrid } from '@mui/x-data-grid';
 import { mockData } from '../../data/mockData';
 import PersonIcon from '@mui/icons-material/Person';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import { useContext } from 'react';
+import { UserContext } from '../../App';
+import { Navigate } from 'react-router-dom';
 
 const Table = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const { user } = useContext(UserContext);
 
     const columns = [
         {field: "id", headerName: "ID"},
@@ -44,6 +48,8 @@ const Table = () => {
         }
     ]
     return (
+        <>
+        {!user ? <Navigate to='/login'/> : <></>}
         <Box m="20px">
             {/* <Box display="flex" justifyContent="space-between" alignItems="center"> */}
             <Header title="TABLE" subtitle="List of active forms"/>
@@ -79,6 +85,7 @@ const Table = () => {
                 <DataGrid rows={mockData} columns={columns}/>
             </Box>
         </Box>
+        </>
     );
     
 }

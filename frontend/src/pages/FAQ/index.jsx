@@ -7,11 +7,18 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { tokens } from "../../theme";
 
+import { useContext } from 'react';
+import { UserContext } from '../../App';
+import { Navigate } from 'react-router-dom';
+
 const FAQ = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const { user } = useContext(UserContext);
 
     return (
+        <>
+        {!user ? <Navigate to='/login'/> : <></>}
         <Box m="20px">
             <Header title="FAQ" subtitle="Here are some Frequently Asked Questions" />
             <br></br>
@@ -55,6 +62,7 @@ const FAQ = () => {
                 </AccordionDetails>
             </Accordion>
         </Box>
+        </>
     );
     
 }

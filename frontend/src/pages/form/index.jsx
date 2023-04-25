@@ -3,6 +3,9 @@ import { Box, Button, TextField } from '@mui/material';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useContext } from 'react';
+import { UserContext } from '../../App';
+import { Navigate } from 'react-router-dom';
 
 const initialValues = {
     firstName: "",
@@ -23,6 +26,7 @@ const formSchema = yup.object().shape({
 
 const Form = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
+    const { user } = useContext(UserContext);
 
     const handleFormSubmit = (values) => {
         console.log("Submitted Form!")
@@ -30,6 +34,8 @@ const Form = () => {
     }
 
     return (
+        <>
+        {!user ? <Navigate to='/login'/> : <></>}
         <Box m="20px">
             {/* <Box display="flex" justifyContent="space-between" alignItems="center"> */}
             <Header title="FORM" subtitle="Enter the details and submit the form."/>
@@ -98,6 +104,7 @@ const Form = () => {
                 )}
             </Formik>
         </Box>
+        </>
     );
     
 }

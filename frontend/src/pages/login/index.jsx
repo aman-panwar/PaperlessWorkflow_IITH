@@ -1,34 +1,57 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { GoogleLogin } from '@react-oauth/google';
 import { Navigate } from 'react-router-dom';
-
+import { UserContext } from '../../App';
 import { Box, useTheme, Typography } from '@mui/material';
 import { tokens } from '../../theme';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import axios from "axios";
 
 function Login() {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
-    const [authenticated, setAuthenticated] = useState(false);
 
-    const auth_success = (message) => {
-        console.log('Successful login');
-        setAuthenticated(true);
+    const { user, setUser, logoutUser } = useContext(UserContext);
+    const [googleUser, setGoogleUser] = useState(null);
 
+    const login = useGoogleLogin({
+        onSuccess: credentialResponse => setGoogleUser(credentialResponse),
+        onError: err => console.log(err)
+      });
+    
+    useEffect(
+        () => {
+          if (googleUser) {
+            axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${googleUser.access_token}`, {
+              headers: {
+                Authorization: `Bearer ${googleUser.access_token}`,
+                Accept: 'application/json'
+              }
+            })
+            .then(res => {
+                console.log(res.data);
+                setUser(res.data);
+              })
+            .catch(err => console.log(err.data))
+          }
+        },
+        [ googleUser ]
+    );
+    
+    if (!logoutUser)
+    {
+      logoutUser = () => {
+        googleLogout();
+        setUser(null);
+      }
     }
-    const auth_fail = (message) => {
-        console.log('Login Failed');
-        setAuthenticated(false);
-    }
-
-    if(authenticated){
-        return <Navigate to='/'/>
-    }
-
+    
     
 
     return(
         <>
+        {user ? <Navigate to='/'/> : <></>}
         <Box 
             display="flex" 
             flexDirection="column" 
@@ -47,7 +70,7 @@ function Login() {
             </Box>
             <br></br>
             <Box>
-            <GoogleLogin onSuccess={auth_success} onError={auth_fail}/>
+            <button onClick={login}> Sign in with Google </button>
             </Box> 
         </Box>
         

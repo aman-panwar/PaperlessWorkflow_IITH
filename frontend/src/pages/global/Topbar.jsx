@@ -1,6 +1,7 @@
 import { Box, IconButton, useTheme } from '@mui/material';
 import { useContext } from 'react';
 import { ColorModeContext, tokens } from '../../theme';
+import { UserContext } from '../../App';
 import { Link } from 'react-router-dom';
 import InputBase from '@mui/material/InputBase'
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
@@ -15,6 +16,7 @@ const Topbar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
+    const { logoutUser } = useContext(UserContext); 
 
     return (
         <Box display="flex" justifyContent="space-between" p={2}>
@@ -44,7 +46,7 @@ const Topbar = () => {
                 <IconButton><SettingsOutlinedIcon/></IconButton>
                 <IconButton><PersonOutlinedIcon/></IconButton>
                 <Link to='/login'>
-                    <IconButton><LogoutIcon/></IconButton>
+                    <IconButton onClick={logoutUser}><LogoutIcon/></IconButton>
                 </Link>
                 
             </Box>

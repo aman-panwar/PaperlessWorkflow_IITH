@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 // import '../../../node_modules/react-pro-sidebar/dist/styles';
 import 'react-pro-sidebar/dist/css/styles.css'
 import { Box, IconButton, ListItemIcon, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../theme';
+import { UserContext } from '../../App';
+import { Navigate } from 'react-router-dom';
 
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import QuizIcon from '@mui/icons-material/Quiz';
@@ -32,9 +34,12 @@ const Sidebar = () => {
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
+    const { user } = useContext(UserContext);
 
 
     return (
+        <>
+        {!user ? <Navigate to='/login'/> : <></>}
         <Box
             sx ={{
                 "& .pro-sidebar-inner": {
@@ -91,7 +96,8 @@ const Sidebar = () => {
                         alt="profile-user"
                         width="100px"
                         height="100px"
-                        src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+                        // src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+                        src={user.picture}
                         style={{ cursor: "pointer", borderRadius: "50%"}}
                     />
                 </Box>
@@ -101,11 +107,11 @@ const Sidebar = () => {
                         colors={colors.grey[100]} 
                         frontWeight="bold" 
                         sx={{ m: "10px 0 0 0"}}
-                    > Shreya Kumar</Typography>
+                    > {user.name} </Typography>
                     <Typography
                         variant="h5"
                         color={colors.greenAccent[500]}
-                    > es20btech11026@iith.ac.in</Typography>
+                    > {user.email} </Typography>
                 </Box>
             </Box>
         )}
@@ -159,6 +165,7 @@ const Sidebar = () => {
         </Menu>
         </ProSidebar>
         </Box>
+        </>
     );
 }
 
