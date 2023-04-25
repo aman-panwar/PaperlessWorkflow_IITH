@@ -37,7 +37,8 @@ class DbManager(metaclass = SingletonMetaClass):
         self.clientQ = Queue(maxsize= self.max_size) #saves the clients available for use
         self.host = 'mongodb+srv://cs20btech11004:Y1JDdwqWBLgOWp2g@cluster0.iz8c5af.mongodb.net/?retryWrites=true&w=majority'
         for _ in range(self.max_size):
-            self.clientQ.put(MongoClient(self.host))
+            try: self.clientQ.put(MongoClient(self.host))
+            except: raise Exception('Cannot connect to db :(')
         self.lock = Lock()
     def get_client(self):
         """returns a client wrapper object containing the MongoClient
@@ -60,8 +61,18 @@ class DbManager(metaclass = SingletonMetaClass):
 #       intended use        #
 #############################        
 # with DbManager().get_client() as c:
-#     forms = c['PaperlessWorkflow']['Forms']
-#     obj = forms.find_one({"_id" : ObjectId('643ff5dd326f4d6638bea447')})
-#     print(type(obj))
-#     for x in obj:
-#         print(f"{x} ({type(obj[x])}): {obj[x]}")
+    # forms = c['PaperlessWorkflow']['Forms']
+    # obj = forms.find_one({"_id" : ObjectId('643ff5dd326f4d6638bea447')})
+    # print(type(obj))
+    # for x in obj:
+    #     print(f"{x} ({type(obj[x])}): {obj[x]}")
+
+
+
+    # forms = c['PaperlessWorkflow']['Forms']
+    # submitted_forms_query = {'applicant_id':'aman.panwar2002@gmail.com'}
+    # for x in forms.find(submitted_forms_query, {}):
+    #     print(type(x))
+    #     print(x)
+    #     print("")
+    

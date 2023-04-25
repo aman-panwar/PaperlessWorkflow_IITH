@@ -9,8 +9,13 @@ class User:
             data_dict = users.find_one({"_id": email})
             if data_dict == None: data_dict = {} #if user is not present already . data is empty
 
+            #init submitted forms and pending forms
+            forms = c['PaperlessWorkflow']['Forms']
+            data_dict['submitted_forms'] = [str(f['_id']) for f in forms.find({'applicant_id':email}, {})]
+            data_dict['pending_forms'] = [str(f['_id']) for f in forms.find({'cur_level.approvers_id':email}, {})]
+
         self.ID = data_dict.setdefault('email', email)
-        self.pending_approvals = data_dict.setdefault('pending_approvals', [])
+        self.pending_forms = data_dict.setdefault('pending_forms', [])
         self.submitted_forms = data_dict.setdefault('submitted_forms', [])
         self.notification_freq = data_dict.setdefault('notification_freq', "DAILY")
         self.role = data_dict.setdefault('role', "APPLICANT")
@@ -34,7 +39,6 @@ class User:
             except: return False
             return replace_result.acknowledged
 
-
     def set_notification_frequency(self, frequency: str):
         valid_options = ["NEVER", "DAILY", "WEEKLY", "EVERY_FORM"]
         if frequency in valid_options:
@@ -46,7 +50,7 @@ class User:
     def to_dict(self) -> dict:
         json_dict = {}
         json_dict['_id'] = self.ID
-        json_dict['pending_approvals'] = self.pending_approvals
+        json_dict['pending_forms'] = self.pending_forms
         json_dict['submitted_forms'] = self.submitted_forms
         json_dict['notification_freq'] = self.notification_freq
         json_dict['role'] = self.role
@@ -75,6 +79,9 @@ class User:
     #     """
 
 
+u = User('aman.panwar2002@gmail.com')
+print('submitted: ', u.submitted_forms)
+print('approvals: ', u.pending_forms)
 # u = User("yolo@gmail.com")
 # u2 = User("yolo@gmail.com")
 # print(u.save_to_db())

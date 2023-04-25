@@ -114,21 +114,33 @@ class Form:
         json_dict['version'] = self.version
         return json_dict
 
-def main():
-    print("hey there")
-    F_instance = Form(ID='643ff5dd326f4d6638bea447')
-    j = F_instance.to_dict()
-    print(j)
-    print("="*50)
-    F2 = Form()
-    print(F2.ID)
-    print(type(F2.ID))
-    F2.status = "YEEWWWw"
-    print(F2.save_to_db())
-    print(F2.to_dict())
-    print("="*50)
-    print("="*40)
-    print(type(j))
-    print(j)
-if __name__ == "__main__":
-    main()
+# def main():
+#     print("hey there")
+#     F_instance = Form(ID='643ff5dd326f4d6638bea447')
+#     j = F_instance.to_dict()
+#     print(j)
+#     print("="*50)
+#     F2 = Form()
+#     print(F2.ID)
+#     print(type(F2.ID))
+#     F2.status = "YEEWWWw"
+#     print(F2.save_to_db())
+#     print(F2.to_dict())
+#     print("="*50)
+#     print("="*40)
+#     print(type(j))
+#     print(j)
+
+#     F3 = Form()
+#     F3.applicant_id = "aman.panwar2002@gmail.com"
+#     print(F3.save_to_db())
+
+#     F4 = Form()
+#     F4.applicant_id = "aman.panwar2002@gmail.com"
+#     print(F3.save_to_db())
+
+F =Form()
+F.cur_level.approvers_id = ["aman.panwar2002@gmail.com", "jjk@manga.com", "SDFSDFSDF"]
+F.save_to_db()
+# if __name__ == "__main__":
+#     main()
