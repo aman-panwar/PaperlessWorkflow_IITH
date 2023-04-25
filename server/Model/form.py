@@ -21,7 +21,7 @@ Json strings are useful for other Classes tho.
 
 class Form:
 
-    def __init__(self, ID: str = None ,json_str: str = None) -> None:
+    def __init__(self, ID: str = None ,inp_dict: dict = None) -> None:
         """initialises the Form first with json_str. If json_str is not provided
         (or is None) then inits with ID (retrieves info from db). If both json_str
         and ID are not provided or is None then init an empty form
@@ -33,26 +33,26 @@ class Form:
         Raises:
             Exception: _description_
         """
-        json_dict = {} #will eventually populate form entries
-        if json_str != None:
+        data_dict = {} #will eventually populate form entries
+        if inp_dict != None:
             #init form with json_str
-            json_dict = json.loads(json_str)
+            data_dict = inp_dict
         elif ID != None:
             #init form from db use _id= ID
             with DbManager().get_client() as c:
                 forms = c['PaperlessWorkflow']['Forms']
-                json_dict = forms.find_one({"_id": ObjectId(ID)})
-                if json_dict == None: raise Exception(f"Did not find object with id: {ID}")
+                data_dict = forms.find_one({"_id": ObjectId(ID)})
+                if data_dict == None: raise Exception(f"Did not find object with id: {ID}")
 
         #populating form entries with json_dict
-        self.ID = str(json_dict.setdefault('_id', None))
-        self.form_meta = FormMetaData(json_str = json_dict.setdefault('form_meta', None))
-        self.cur_level_no = json_dict.setdefault('cur_level_no', None)
-        self.cur_level = Level(json_str = json_dict.setdefault('cur_level', None))
-        self.data = Data(json_str = json_dict.setdefault('data', None))
-        self.applicant_id = json_dict.setdefault('applicant_id', None)
-        self.status = json_dict.setdefault('status', None)
-        self.version = json_dict.setdefault('version', 0)
+        self.ID = data_dict['_id'] if '_id' in data_dict.keys() else None
+        self.form_meta = FormMetaData(input_dict = data_dict.setdefault('form_meta', None))
+        self.cur_level_no = data_dict.setdefault('cur_level_no', None)
+        self.cur_level = Level(inp_dict = data_dict.setdefault('cur_level', None))
+        self.data = Data(inp_dict = data_dict.setdefault('data', None))
+        self.applicant_id = data_dict.setdefault('applicant_id', None)
+        self.status = data_dict.setdefault('status', None)
+        self.version = data_dict.setdefault('version', 0)
     
     def save_to_db(self) -> bool:
         """saves the form to db
@@ -64,9 +64,10 @@ class Form:
             forms = c['PaperlessWorkflow']['Forms']
             
             search_field = {'version': self.version}
-            if self.ID!=None: search_field['_id': self.ID]
+            if self.ID!=None: search_field['_id'] =  self.ID
             
             my_data = self.to_dict()
+            my_data.pop('_id', None)
             my_data['version']+=1
             
             try: replace_result = forms.replace_one(search_field, my_data, upsert=True)
@@ -104,26 +105,30 @@ class Form:
     def to_dict(self) -> dict:
         json_dict = {}
         json_dict["_id"] = self.ID
-        json_dict["form_meta"] = self.form_meta.to_json()
+        json_dict["form_meta"] = self.form_meta.to_dict()
         json_dict["cur_level_no"] = self.cur_level_no
-        json_dict["cur_level"] = self.cur_level.to_json()
+        json_dict["cur_level"] = self.cur_level.to_dict()
         json_dict["applicant_id"] = self.applicant_id
-        json_dict["data"] = self.data.to_json()
+        json_dict["data"] = self.data.to_dict()
         json_dict["status"] = self.status
         json_dict['version'] = self.version
         return json_dict
 
-# def main():
-#     print("hey there")
-#     F_instance = Form(ID='643ff5dd326f4d6638bea447')
-#     j = json.dumps(F_instance.to_dict())
-#     print(j)
-#     print("="*50)
-#     F2 = Form(json_str=j)
-#     print(F2.to_dict())
-#     print("="*50)
-#     print("="*40)
-#     print(type(j))
-#     print(j)
-# if __name__ == "__main__":
-#     main()
+def main():
+    print("hey there")
+    F_instance = Form(ID='643ff5dd326f4d6638bea447')
+    j = F_instance.to_dict()
+    print(j)
+    print("="*50)
+    F2 = Form()
+    print(F2.ID)
+    print(type(F2.ID))
+    F2.status = "YEEWWWw"
+    print(F2.save_to_db())
+    print(F2.to_dict())
+    print("="*50)
+    print("="*40)
+    print(type(j))
+    print(j)
+if __name__ == "__main__":
+    main()

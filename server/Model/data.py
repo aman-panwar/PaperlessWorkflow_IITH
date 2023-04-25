@@ -5,24 +5,24 @@ class Data:
     """Holds the log value as json
 
     """
-    def __init__(self,data: str = "", json_str:str = None ) -> None:
+    def __init__(self,data: str = "", inp_dict:str = None ) -> None:
         """initializes the data object
 
         Args:
             data (str, optional): _description_. Defaults to "".
         """
-        if json_str == None:
+        if inp_dict == None:
             self.log=[]
             self.approval_log=[]
         else:
-            json_dict = json.loads(json_str)
+            json_dict = inp_dict
             self.log = json_dict['log']
             self.approval_log=json_dict['approval_log']
-    def to_json(self):
+    def to_dict(self):
         json_dict = {}
         json_dict["log"] = self.log
         json_dict["approval_log"] = self.approval_log
-        return json.dumps(json_dict)
+        return json_dict
     
     def append_field(self,u_id : str,level_no :int ,field_index:int ,field_entry: Field):
         """_summary_

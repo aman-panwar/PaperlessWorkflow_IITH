@@ -13,10 +13,10 @@ class FormMetaData:
         users (list): contains the list of users at each level
         req_fields (list): contains the list of required fields at each level
     """
-    def __init__(self, form_type:str = None, json_str:str = None):
+    def __init__(self, form_type:str = None, input_dict:str = None):
 
-        if json_str != None:
-            json_dict = json.loads(json_str)
+        if input_dict != None:
+            json_dict = input_dict
             self.form_type = json_dict["form_type"]
             self.display_name = json_dict["display_name"] 
             self.n_levels = json_dict["n_levels"]
@@ -48,14 +48,14 @@ class FormMetaData:
     def get_field_cnt_at_level(self,index):
         return len(self.req_fields[index])
     
-    def to_json(self)->str:
+    def to_dict(self)->str:
         json_dict = {}
         json_dict["form_type"]= self.form_type if hasattr(self, 'form_type') else None
         json_dict["display_name"] = self.display_name if hasattr(self, 'display_name') else None
         json_dict["n_levels"] = self.n_levels if hasattr(self, 'n_levels') else None
         json_dict["users"] = self.users if hasattr(self, 'users') else None
         json_dict["req_fields"] = self.req_fields if hasattr(self, 'req_fields') else None
-        return json.dumps(json_dict)
+        return json_dict
 # Testing code
 # f = FormMetaData("leave")
 # print(f.form_uid)
