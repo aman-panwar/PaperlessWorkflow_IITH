@@ -1,30 +1,76 @@
+import time
+import json
+from fields import Field
 class Data:
     """Holds the log value as json
 
-    NOTE: we need to come up with exactly what field out log is supposed to hold
     """
-    def __init__(data: str = "") -> None:
-        """takes the string saved in db and converts it into log info
+    def __init__(self,data: str = "", inp_dict:str = None ) -> None:
+        """initializes the data object
 
         Args:
-            data (str, optional): string to make json file from. Defaults to "".
+            data (str, optional): _description_. Defaults to "".
         """
-        pass
-    def append(data: dict):
-        """adds the data to the log
-           
+        if inp_dict == None:
+            self.log=[]
+            self.approval_log=[]
+        else:
+            json_dict = inp_dict
+            self.log = json_dict['log']
+            self.approval_log=json_dict['approval_log']
+    def to_dict(self):
+        json_dict = {}
+        json_dict["log"] = self.log
+        json_dict["approval_log"] = self.approval_log
+        return json_dict
+    
+    def append_field(self,u_id : str,level_no :int ,field_index:int ,field_entry: Field):
+        """_summary_
+
         Args:
-            data (dict): info as a dictionary
+            u_id (str): user_id who made this update
+            level_no (int): The level at which this update is being made
+            field_index (int): the index of the field where update is being made
+            field_entry (Field): The actual field value getting stored
         """
+        self.log.append((time.time(),u_id, level_no ,field_index ,field_entry))
+
+    def append_approval(self,u_id:str,level_no:int,action: str,remarks: str):
+        self.approval_log.append((time.time(),u_id,level_no,action,remarks))
+    
     def get_form_state(self)->dict:
         """return the cur state of form instance
 
         Returns:
             dict: form as json
         """
-    def get_log(self)->str:
-        """return log of the form instance
+        ret={}
+        for ele in self.log:
+            kee=(ele[2],ele[3])
+            if  kee in ret :
+                if(ret[kee][0]< ele[0]):
+                    ret[kee]=(ele[0],ele[4])
+            else:
+                ret[kee]=(ele[0],ele[4])
+        return ret
+    
+    def get_log(self)->list:
+        """returns log made so far
 
         Returns:
-            str: _description_
+            list: the object log
         """
+        return self.log
+    
+    def get_approval_log(self)->list:
+        return self.approval_log
+    
+    def get_update_cnt(self)->int:
+        return len(self.log)
+    
+    def get_field_cnt(self)->int:
+        ret=set()
+        for ele in self.log:
+            key=(ele[2],ele[3])
+            ret.add(key)
+        return len(ret)
