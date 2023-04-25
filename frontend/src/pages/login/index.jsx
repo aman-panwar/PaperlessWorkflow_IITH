@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { GoogleLogin } from '@react-oauth/google';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { Box, useTheme, Typography } from '@mui/material';

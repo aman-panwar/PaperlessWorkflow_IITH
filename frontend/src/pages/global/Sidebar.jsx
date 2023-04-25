@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 // import '../../../node_modules/react-pro-sidebar/dist/styles';
 import 'react-pro-sidebar/dist/css/styles.css'
-import { Box, IconButton, ListItemIcon, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../theme';
 import { UserContext } from '../../App';
