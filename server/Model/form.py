@@ -80,6 +80,7 @@ class Form:
                     search_field, my_data, upsert=True)
             except:
                 return False
+            self.ID = replace_result.upserted_id
             return replace_result.acknowledged
 
     def delete_from_db(self) -> bool:
@@ -150,8 +151,11 @@ class Form:
 
 
 # F = Form()
+# print(F.ID)
+# F.cur_level_no =90
 # F.cur_level.approvers_id = [
 #     "aman.panwar2002@gmail.com", "jjk@manga.com", "SDFSDFSDF"]
-# F.save_to_db()
-# # if __name__ == "__main__":
-# #     main()
+# print(F.save_to_db())
+# print(F.ID)
+# if __name__ == "__main__":
+#     main()
