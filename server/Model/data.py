@@ -2,7 +2,7 @@ import time
 import json
 from fields import *
 
-
+from copy import deepcopy
 class Data:
     """Holds the log value as json
 
@@ -26,7 +26,6 @@ class Data:
                 arg_list = [fe['display_name'],fe['value']]
                 if 'values_list' in fe.keys():
                     arg_list = arg_list[0:-1]+ [fe['values_list']]+ [arg_list[-1]]
-                print(arg_list)
                 l['field_entry'] = FieldFactory(field_type=fe['field_type'],arg_list=arg_list)
                 temp.append(l)
             json_dict['log'] = temp
@@ -36,9 +35,8 @@ class Data:
 
     def to_dict(self):
         json_dict = {}
-        json_dict["log"] = self.log
+        json_dict["log"] = deepcopy(self.log)
         for l in json_dict['log']:
-            #print(type(l['field_entry']), l['field_entry'])
             l['field_entry'] = l['field_entry'].to_dict()
         json_dict["approval_log"] = self.approval_log
         return json_dict
