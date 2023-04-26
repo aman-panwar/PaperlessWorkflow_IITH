@@ -10,8 +10,12 @@ class Field(ABC):
         value (any): value of the field
     """
     def __init__(self, display_name : str, value : any):
+        self.field_type = None
         self.display_name = display_name
         self.value = value
+        self.field_type = self.__class__.__name__
+    def to_dict(self):
+        return self.__dict__
 
 class Textbox(Field):
     """
@@ -23,7 +27,6 @@ class Textbox(Field):
     """
     def __init__(self, display_name : str, value : str):
         super().__init__(display_name, value)
-
     def __str__(self):
         return f'Textbox "{self.display_name}": Value = {self.value}'
 
@@ -51,7 +54,6 @@ class Dropdown(Field):
         value (int): the index of the value chosen from the list of options
     """
     def __init__(self, display_name : str, values_list : list, value : int):
-        
         super().__init__(display_name, value)
         self.values_list = values_list
 
@@ -66,12 +68,9 @@ class Checkbox(Field):
         value (bool): stores whether the value of selected or not
     """
     def __init__(self, display_name : str, value : bool):
-        
         super().__init__(display_name, value)
-
     def __str__(self):
         return f'Checkbox "{self.display_name}": Selected: {self.value}'
-
 
 class File(Field):
     """
@@ -84,20 +83,19 @@ class File(Field):
     """
     def __init__(self, display_name : str, value : str):
         super().__init__(display_name, value)
-
     def __str__(self):
         return f'File "{self.display_name}"' #+ f': Path = {self.value}'
 
-def FieldFactory(field_meta,val) -> Field:
+def FieldFactory(field_type:str, arg_list:list) -> Field:
     field_entry=False
-    if field_meta[1]=="textbox":
-        field_entry=Textbox(field_meta[0],val)
-    elif field_meta[1]=="date":
-        field_entry=Date(field_meta[0],val)
-    elif field_meta[1]=="dropdown":
-        field_entry=Dropdown(field_meta[0],field_meta[2],val)
-    elif field_meta[1]=="file":
-        field_entry=File(field_meta[0],val)
+    if field_type=="Textbox":
+        field_entry=Textbox(arg_list[0],arg_list[-1])
+    elif field_type=="Date":
+        field_entry=Date(arg_list[0],arg_list[-1])
+    elif field_type=="Dropdown":
+        field_entry=Dropdown(arg_list[0],arg_list[1],arg_list[-1])
+    elif field_type=="File":
+        field_entry=File(arg_list[0],arg_list[-1])
     else :
         raise Exception("INVALID FIELD VALUE")
     return field_entry
