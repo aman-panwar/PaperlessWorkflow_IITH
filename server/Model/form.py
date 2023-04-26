@@ -47,7 +47,7 @@ class Form:
                     raise Exception(f"Did not find object with id: {ID}")
 
         # populating form entries with json_dict
-        self.ID = data_dict['_id'] if '_id' in data_dict.keys() else None
+        self.ID = str(data_dict['_id']) if '_id' in data_dict.keys() else None
         self.form_meta = FormMetaData(
             input_dict=data_dict.setdefault('form_meta', None))
         self.cur_level_no = data_dict.setdefault('cur_level_no', None)
