@@ -149,9 +149,9 @@ class Form:
 #     print(F3.save_to_db())
 
 
-F = Form()
-F.cur_level.approvers_id = [
-    "aman.panwar2002@gmail.com", "jjk@manga.com", "SDFSDFSDF"]
-F.save_to_db()
-# if __name__ == "__main__":
-#     main()
+# F = Form()
+# F.cur_level.approvers_id = [
+#     "aman.panwar2002@gmail.com", "jjk@manga.com", "SDFSDFSDF"]
+# F.save_to_db()
+# # if __name__ == "__main__":
+# #     main()
