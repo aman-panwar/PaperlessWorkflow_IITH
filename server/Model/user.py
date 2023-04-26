@@ -82,7 +82,3 @@ class User:
 u = User('aman.panwar2002@gmail.com')
 print('submitted: ', u.submitted_forms)
 print('approvals: ', u.pending_forms)
-# u = User("yolo@gmail.com")
-# u2 = User("yolo@gmail.com")
-# print(u.save_to_db())
-# print(u2.save_to_db())
