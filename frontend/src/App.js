@@ -13,10 +13,12 @@ import Table from './pages/table';
 import { ColorModeContext, useMode } from './theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { googleLogout } from '@react-oauth/google';
+import { create } from '@mui/material/styles/createTransitions';
 
 // const baseURL = 'http://localhost:5000';
 export const UserContext = createContext();
 export const FormSelectContext = createContext();
+export const SidebarContext = createContext();
 
 function App() {
 
@@ -32,9 +34,11 @@ function App() {
 
   const [openFormModal, setOpenFormModal] = useState(false);
   const [formType, setFormType] = useState(null);
+  const [selected, setSelected] = useState("Dashboard");
   
   return(
     <>
+    <SidebarContext.Provider value={{selected, setSelected}}>
     <FormSelectContext.Provider value={{formType, setFormType, openFormModal, setOpenFormModal}}>
     <UserContext.Provider value={{user, setUser, logoutUser}}>
     <ColorModeContext.Provider value={colorMode}>
@@ -60,6 +64,7 @@ function App() {
     </ColorModeContext.Provider>
     </UserContext.Provider>
     </FormSelectContext.Provider>
+    </SidebarContext.Provider>
     </>
   );
 

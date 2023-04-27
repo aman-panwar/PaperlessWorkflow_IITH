@@ -28,10 +28,13 @@ const ListItem = ({displayName, uniqueName, link}) => {
                 display="flex" 
                 justifyContent="center"
                 alignItems="center"
+                width="200px"
                 sx = {{
                     'border': '1px solid black',
+                     wordWrap: 'break-word'
                 }}
-            > 
+                
+            >
                 <Typography
                     variant="h4"
                     color={colors.grey[100]}

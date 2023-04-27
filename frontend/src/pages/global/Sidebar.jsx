@@ -5,7 +5,7 @@ import 'react-pro-sidebar/dist/css/styles.css'
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../theme';
-import { UserContext, FormSelectContext } from '../../App';
+import { UserContext, FormSelectContext, SidebarContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -15,14 +15,14 @@ import HomeIcon from '@mui/icons-material/Home';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
-const Item = ( {title, to, icon, selected, setSelected, aaltClickFunc}) => {
+const Item = ( {title, to, icon, selected, setSelected, altClickFunc}) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode);
     return(
         <MenuItem 
             active={selected === title} 
             style = {{ color: colors.grey[100]}} 
-            onClick={!aaltClickFunc ? () => setSelected(title): aaltClickFunc}
+            onClick={!altClickFunc ? () => setSelected(title): altClickFunc}
             icon = {icon}>
             <Typography>{title}</Typography>
             <Link to={to}/>
@@ -35,9 +35,9 @@ const Sidebar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const [selected, setSelected] = useState("Dashboard");
     const { user } = useContext(UserContext);
     const { setOpenFormModal } = useContext(FormSelectContext);
+    const { selected, setSelected } = useContext(SidebarContext);
 
     const altClickFunc = () => {
         setSelected("Submit Form");
@@ -152,7 +152,7 @@ const Sidebar = () => {
                 icon={<AddIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
-                aaltClickFunc={altClickFunc}
+                altClickFunc={altClickFunc}
             />
             <Item
                 title="Table"
