@@ -47,6 +47,9 @@ class Form:
                     raise Exception(f"Did not find object with id: {ID}")
 
         # populating form entries with json_dict
+        self.init_with_dict(data_dict=data_dict)
+
+    def init_with_dict(self, data_dict:dict):
         self.ID = str(data_dict['_id']) if '_id' in data_dict.keys() else None
         self.form_meta = FormMetaData(
             input_dict=data_dict.setdefault('form_meta', None))
@@ -58,6 +61,7 @@ class Form:
         self.status = data_dict.setdefault('status', None)
         self.version = data_dict.setdefault('version', 0)
 
+
     def save_to_db(self) -> bool:
         """saves the form to db
 
@@ -67,9 +71,11 @@ class Form:
         with DbManager().get_client() as c:
             forms = c['PaperlessWorkflow']['Forms']
 
-            search_field = {'version': self.version}
+            search_field = {}
             if self.ID != None:
-                search_field['_id'] = self.ID
+                search_field['_id'] = ObjectId(self.ID)
+                search_field['version'] = self.version
+        
 
             my_data = self.to_dict()
             my_data.pop('_id', None)
@@ -78,8 +84,10 @@ class Form:
             try:
                 replace_result = forms.replace_one(
                     search_field, my_data, upsert=True)
-            except:
+            except Exception as e:
                 return False
+            
+            self.init_with_dict(my_data)
             self.ID = replace_result.upserted_id
             return replace_result.acknowledged
 

@@ -29,7 +29,7 @@ class Accept:
         self.user_id=_user_id
         self.field_vals=_field_vals
     
-    def officer_approve(self,remarks:str):
+    def officer_approve(self,remarks:str) -> bool:
         """_summary_
 
         Returns:
@@ -51,13 +51,13 @@ class Accept:
                 users_info,field_info=F_instance.form_meta.get_level(F_instance.cur_level_no)[1]
                 F_instance.cur_level=Level(users_info,field_info,users_info,F_instance.cur_level_no)
             #POST BACK TO DB
+            print("in command", self.form_id, " # ", F_instance.ID)
             if F_instance.save_to_db():
                 print(F_instance.ID)
                 return True
             else :
                 print("Error,DB not updated")
                 return False
-
         else:
             print("Invalid call,User not valid/ Invalid Form")
             return False
@@ -122,32 +122,38 @@ def main():
     # else:
     #     print("Form submission Failed")
 
-    #Set this to whatever you get from above code
+    # #Set this to whatever you get from above code
     # F_ID="644a05946158406dd18d5c28"
 
     # F_existing= Form(ID=F_ID)
     # d=F_existing.to_dict()
-    # show(d)
+    # #show(d)
 
-    #returns invalid call,due to inappropriate email
+    # #returns invalid call,due to inappropriate email
     # Approval=Accept(F_ID,"tyagi@gmail",["this is remark for field entry"])
     # Approval.officer_approve("These are the log remarks")
 
     #Bug over here approval returns true first time for the form but when form is viewed no
     #changes are made and on trying for approval/save_to_db() again it returns false
-    # F_ID="6449ad0e6158406dd146efa9"
-    # Approval=Accept(F_ID,"cs20btech11060@iith.ac.in",["this is remark for field entry"])
-    # if Approval.officer_approve("These are the log remarks"):
-    #     print("Form Approved by officer")
-    # else:
-    #     print("Form Approval Failed")
-
+    
+    #show(Form(ID='6449ad0e6158406dd146efa9').to_dict())
+    
+    
+    F_ID="6449ad0e6158406dd146efa9"
+    Approval=Accept(F_ID,"cs20btech11060@iith.ac.in",["this is remark for field entry"])
+    if Approval.officer_approve("These are the log remarks"):
+        print("Form Approved by officer")
+    else:
+        print("Form Approval Failed")
+    show(Form(ID = F_ID ).to_dict())
     # F_existing= Form(ID=F_ID)
     
     # d=F_existing.to_dict()
-    # show(d)
+    # #show(d)
 
     # print(F_existing.save_to_db())
+    
+
     pass
 
 if __name__=="__main__":
