@@ -46,7 +46,7 @@ class Accept:
             # n levels total ,last level is n-1 ,equality implies  all levels exhausted,ie accpeted
             if F_instance.cur_level_no>=F_instance.form_meta.n_levels:
                 F_instance.status=="ACCEPTED"
-                F_instance.cur_level=None
+                # F_instance.cur_level=None
             else:
                 users_info,field_info=F_instance.form_meta.get_level(F_instance.cur_level_no)[1]
                 F_instance.cur_level=Level(users_info,field_info,users_info,F_instance.cur_level_no)
@@ -94,34 +94,100 @@ class Accept:
             print(F_new.ID)
             return True
         else: 
+            print("Created form not posted to DB")
             return False
         
     def notify():
         pass
 
 class Reject:
-    def __init__(self) -> None:
-        pass
+    def __init__(self,_form_id,_user_id,_rejection_remarks) -> None:
+        self.form_id=_form_id
+        self.user_id=_user_id
+        self.reject_reason=_rejection_remarks
+
     def execute(self):
-        pass
+        #This function internally faults if invalid form_id requested
+        F_instance =Form(ID=self.form_id)
+        if self.user_id in F_instance.cur_level.approvers_id and F_instance.status=="PENDING":
+            F_instance.status="REJECTED"
+            F_instance.data.append_approval(time.time(),self.user_id,F_instance.cur_level_no,"REJECTED",self.reject_reason)
+            #POST BACK TO DB
+            if(F_instance.save_to_db()):
+                print(F_instance.ID)
+                return True
+            else: 
+                print("Error,DB not updated")
+                return False
+        else: 
+            print("Invalid call,User not valid/ Invalid Form")
+            return False
     def notify():
         pass
 
 class Review:
-    def __init__(self) -> None:
-        pass
+    def __init__(self,_form_id,_user_id,_review_remark) -> None:
+        self.form_id=_form_id
+        self.user_id=_user_id
+        self.review_reason=_review_remark
     def execute(self):
+        F_instance =Form(ID=self.form_id)
+        if self.user_id in F_instance.cur_level.approvers_id and F_instance.status=="PENDING":
+            
+            # n levels total ,last level is n-1 ,equality implies  all levels exhausted,ie accpeted
+            if F_instance.cur_level_no==0:
+                print("Invalid request applicant (layer 0) cannot send form for review")
+                return False
+                # F_instance.status=="ACCEPTED"
+                # F_instance.data.append_approval(time.time(),self.user_id,F_instance.cur_level_no,"APPROVED",remarks)
+                # F_instance.cur_level_no-=1
+                # F_instance.cur_level=None
+            F_instance.data.append_approval(time.time(),self.user_id,F_instance.cur_level_no,"REVIEW",self.review_reason)
+            F_instance.cur_level_no-=1
+            
+            users_info,field_info=F_instance.form_meta.get_level(F_instance.cur_level_no)[1]
+            F_instance.cur_level=Level(users_info,field_info,users_info,F_instance.cur_level_no)
+            
+            #POST BACK TO DB
+            if F_instance.save_to_db():
+                print(F_instance.ID)
+                return True
+            else :
+                print("Error,DB not updated")
+                return False
+        else: 
+            print("Invalid call,User not valid/ Invalid Form")
+            return False   
         pass
     def notify():
         pass
 
 def main():
-    # Submission=Accept(None,"cs20btech11060@iith.ac.in",["Ojjas Tyagi","today",0])
-    # if(Submission.user_submit("leave")):
-    #     print("Form Submitted")
-    # else:
-    #     print("Form submission Failed")
+    #Error print gives me None instead of id when cretaing ,please check
+    Submission=Accept(None,"cs20btech11060@iith.ac.in",["Ojjas Tyagi","today",0])
+    if(Submission.user_submit("leave")):
+        print("Form Submitted")
+    else:
+        print("Form submission Failed")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#earlier testing code
     # #Set this to whatever you get from above code
     # F_ID="644a05946158406dd18d5c28"
 
@@ -139,22 +205,19 @@ def main():
     #show(Form(ID='6449ad0e6158406dd146efa9').to_dict())
     
     
-    F_ID="6449ad0e6158406dd146efa9"
-    Approval=Accept(F_ID,"cs20btech11060@iith.ac.in",["this is remark for field entry"])
-    if Approval.officer_approve("These are the log remarks"):
-        print("Form Approved by officer")
-    else:
-        print("Form Approval Failed")
-    show(Form(ID = F_ID ).to_dict())
+    # F_ID="6449ad0e6158406dd146efa9"
+    # Approval=Accept(F_ID,"cs20btech11060@iith.ac.in",["this is remark for field entry"])
+    # if Approval.officer_approve("These are the log remarks"):
+    #     print("Form Approved by officer")
+    # else:
+    #     print("Form Approval Failed")
+    # show(Form(ID = F_ID ).to_dict())
     # F_existing= Form(ID=F_ID)
     
     # d=F_existing.to_dict()
     # #show(d)
 
     # print(F_existing.save_to_db())
-    
-
-    pass
 
 if __name__=="__main__":
     
