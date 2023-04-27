@@ -1,10 +1,10 @@
-from data import Data
-from formMetaData import FormMetaData
-from level import Level
-from database_manager import DbManager
+from Model.data import Data
+from Model.formMetaData import FormMetaData
+from Model.level import Level
+from Model.database_manager import DbManager
 import json
 from datetime import date
-import fields
+import Model.fields as fields
 import json
 from bson.objectid import ObjectId
 import time
@@ -98,10 +98,23 @@ class Form:
                 return False
             return del_result.acknowledged
 
-    def update(self, field_index, u_id, val) -> None:
-        # idk what this does ???
+    def update_field(self, field_index, u_id, val) -> None:
+        """This function updates the field specified field in the current level
+        with the value provided.Technically works one field by field right now,
+        but when adding fields,add fields of the whole level at once.
+        (All fields of form at a level are mandatory)
+
+        Args:
+            field_index (_type_): the position/index of field in current layer
+            u_id (_type_): user_id making changes
+            val (_type_): new value of the field
+        """
         field_meta = self.cur_level.get_field_at(field_index)
-        field_entry = fields.FieldFactory(field_meta, val)
+        field_type=field_meta[1]
+        b=field_meta[:1]+field_meta[2:]
+        b.append(val)
+        field_entry = fields.FieldFactory(field_type, b)
+        
         self.data.append_field(
             time.time(), u_id, self.cur_level.get_level_no(), field_index, field_entry)
 
@@ -109,7 +122,16 @@ class Form:
         """only to provide a more intutive to to do form.form_meta.set_type()"""
         self.form_meta = FormMetaData(form_type=form_type)
 
-    def get_form_info(self) -> dict:
+    def get_form_info(self) -> list[dict]:
+        """return the cur state of form instance as a list of dictionaries by invoking 
+        the function present in data class(wrapper function)
+
+        Returns:
+            list[dict]: form as list of dictionaries each containing the most recent value of a field,
+            along with the level_no and field_index,user id and time of last update,
+            can be accessed using the keys 'level_no', 'field_index', 'time', 'uid', 'field_entry'
+
+        """
         self.data.get_form_state()
 
     def to_dict(self) -> dict:

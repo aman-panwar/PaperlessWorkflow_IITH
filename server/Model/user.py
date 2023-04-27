@@ -1,4 +1,4 @@
-from database_manager import DbManager
+from Model.database_manager import DbManager
 
 
 class User:
@@ -79,6 +79,6 @@ class User:
     #     """
 
 
-u = User('aman.panwar2002@gmail.com')
-print('submitted: ', u.submitted_forms)
-print('approvals: ', u.pending_forms)
+# u = User('aman.panwar2002@gmail.com')
+# print('submitted: ', u.submitted_forms)
+# print('approvals: ', u.pending_forms)
