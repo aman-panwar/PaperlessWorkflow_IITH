@@ -4,8 +4,9 @@ import { Formik } from 'formik';
 import * as yup from "yup";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useContext } from 'react';
-import { UserContext } from '../../App';
+import { UserContext, FormSelectContext } from '../../App';
 import { Navigate } from 'react-router-dom';
+import Modal from './Modal';
 
 const initialValues = {
     firstName: "",
@@ -27,6 +28,7 @@ const formSchema = yup.object().shape({
 const Form = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const { user } = useContext(UserContext);
+    const { openFormModal, setOpenFormModal, formType, setFormType } = useContext(FormSelectContext);
 
     const handleFormSubmit = (values) => {
         console.log("Submitted Form!")
@@ -36,6 +38,9 @@ const Form = () => {
     return (
         <>
         {!user ? <Navigate to='/login'/> : <></>}
+        { openFormModal ? 
+        <Modal open={openFormModal} onClose={()=>setOpenFormModal(false)}/>
+        : formType ?
         <Box m="20px">
             {/* <Box display="flex" justifyContent="space-between" alignItems="center"> */}
             <Header title="FORM" subtitle="Enter the details and submit the form."/>
@@ -96,14 +101,17 @@ const Form = () => {
                             />
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
-                            <Button type="submit" color="secondary" variant="contained">
+                            <Button type="submit" color="secondary" variant="contained" onClick={()=>setFormType(null)}>
                                 Submit Form
                             </Button>
                         </Box>
                     </form>
                 )}
             </Formik>
-        </Box>
+        </Box> 
+        :
+        <Navigate to='/'/>
+        }
         </>
     );
     

@@ -12,20 +12,30 @@ import Table from './pages/table';
 
 import { ColorModeContext, useMode } from './theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
+import { googleLogout } from '@react-oauth/google';
 
 // const baseURL = 'http://localhost:5000';
 export const UserContext = createContext();
+export const FormSelectContext = createContext();
 
 function App() {
 
   const [theme, colorMode] = useMode()
   const location = useLocation();
   const isLogin = location.pathname.startsWith('/login');
+  const isFormPage = location.pathname.startsWith('/form');
   const [user, setUser] = useState(null);
-  function logoutUser() {};
+  const logoutUser = () => {
+        googleLogout();
+        setUser(null);
+  }
 
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [formType, setFormType] = useState(null);
+  
   return(
     <>
+    <FormSelectContext.Provider value={{formType, setFormType, openFormModal, setOpenFormModal}}>
     <UserContext.Provider value={{user, setUser, logoutUser}}>
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -49,6 +59,7 @@ function App() {
       </ThemeProvider>
     </ColorModeContext.Provider>
     </UserContext.Provider>
+    </FormSelectContext.Provider>
     </>
   );
 

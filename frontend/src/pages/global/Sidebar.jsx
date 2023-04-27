@@ -1,11 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 // import '../../../node_modules/react-pro-sidebar/dist/styles';
 import 'react-pro-sidebar/dist/css/styles.css'
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../theme';
-import { UserContext } from '../../App';
+import { UserContext, FormSelectContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -15,27 +15,34 @@ import HomeIcon from '@mui/icons-material/Home';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
-const Item = ( {title, to, icon, selected, setSelected}) => {
+const Item = ( {title, to, icon, selected, setSelected, aaltClickFunc}) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode);
     return(
         <MenuItem 
             active={selected === title} 
             style = {{ color: colors.grey[100]}} 
-            onClick={()=> setSelected(title)}
+            onClick={!aaltClickFunc ? () => setSelected(title): aaltClickFunc}
             icon = {icon}>
             <Typography>{title}</Typography>
             <Link to={to}/>
         </MenuItem>
     )
 }
+
+
 const Sidebar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
     const { user } = useContext(UserContext);
+    const { setOpenFormModal } = useContext(FormSelectContext);
 
+    const altClickFunc = () => {
+        setSelected("Submit Form");
+        setOpenFormModal(true);
+    };
 
     return (
         <>
@@ -145,6 +152,7 @@ const Sidebar = () => {
                 icon={<AddIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
+                aaltClickFunc={altClickFunc}
             />
             <Item
                 title="Table"
