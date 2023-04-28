@@ -71,25 +71,24 @@ class Form:
         with DbManager().get_client() as c:
             forms = c['PaperlessWorkflow']['Forms']
 
-            search_field = {}
-            if self.ID != None:
-                search_field['_id'] = ObjectId(self.ID)
-                search_field['version'] = self.version
-        
-
             my_data = self.to_dict()
             my_data.pop('_id', None)
             my_data['version'] += 1
 
-            try:
-                replace_result = forms.replace_one(
-                    search_field, my_data, upsert=True)
-            except Exception as e:
-                return False
-            
+            if self.ID == None:
+                db_result = forms.insert_one(my_data)
+                my_data['_id'] = db_result.inserted_id
+            else:
+                search_field = {}
+                search_field['_id'] = ObjectId(self.ID)
+                search_field['version'] = self.version
+                try:
+                    db_result = forms.replace_one(search_field, my_data, upsert=True)
+                except Exception as e:
+                    return False
+                my_data['_id'] = db_result.upserted_id
             self.init_with_dict(my_data)
-            self.ID = replace_result.upserted_id
-            return replace_result.acknowledged
+            return db_result.acknowledged
 
     def delete_from_db(self) -> bool:
         """deletes the entry from db
