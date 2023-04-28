@@ -1,5 +1,6 @@
 from Model.database_manager import DbManager
-
+import smtplib
+from email.message import EmailMessage
 
 class User:
     def __init__(self, email: str) -> None:
@@ -64,21 +65,24 @@ class User:
         else:
             raise Exception(
                 f"Invalid role selected. Valid roles are: {valid_options}")
-
-    # def get_user_info() -> dict:
-    #     '''Return the user info as a json dictionary.'''
-    #     pass
-    # def update(changes: dict) -> bool:
-    #     """ Updates the field to the fields provides as json.
-
-    #     Args:
-    #         changes (dict): json with field from User.get_user_info()
-
-    #     Returns:
-    #         bool: true iff the save into database was successful.
-    #     """
-
-
+    def send_notification(self, message:str):
+        try:
+            msg = EmailMessage()
+            msg.set_content(message)
+            msg['Subject'] = "Update from Paperless Workflow App"
+            msg['From'] = "ppwnotification@gmail.com"
+            msg['To'] = self.ID
+    
+            s = smtplib.SMTP('smtp.gmail.com', 587)
+            s.starttls()
+            s.login('ppwnotification@gmail.com', "jqsgxbagdndwkqnp")
+            s.sendmail("ppwnotification@gmail.com", self.ID, msg.as_string())
+            s.quit()
+        except:
+            return False
+        return True
+    
 # u = User('aman.panwar2002@gmail.com')
+# u.send_email("test content")
 # print('submitted: ', u.submitted_forms)
 # print('approvals: ', u.pending_forms)
