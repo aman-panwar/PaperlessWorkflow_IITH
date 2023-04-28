@@ -5,6 +5,7 @@ import { Box, useTheme, Typography } from '@mui/material';
 import { tokens } from '../../theme';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import axios from "axios";
+const baseURL = 'http://localhost:5000';
 
 function Login() {
 
@@ -29,9 +30,14 @@ function Login() {
           }
         })
           .then(res => {
-            console.log(res.data);
-            setUser(res.data);
-            // TODO: make API call to backend that sends userID, fetches pending forms, sets pendingForms
+            let userinfo = res.data
+            axios.get(`${baseURL}/login/fetch_data`, { 'params': { 'email': res.data.email } })
+              .then(response => {
+                userinfo.pending_forms = response.data.pending_forms;
+                console.log(userinfo);
+                setUser(userinfo);
+              })
+              .catch(err => console.log(err.code))
             // TODO: get whether admin or not
           })
           .catch(err => console.log(err.data))
