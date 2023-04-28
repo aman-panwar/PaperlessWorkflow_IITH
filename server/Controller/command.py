@@ -51,7 +51,6 @@ class Accept:
                 users_info,field_info=F_instance.form_meta.get_level(F_instance.cur_level_no)[1]
                 F_instance.cur_level=Level(users_info,field_info,users_info,F_instance.cur_level_no)
             #POST BACK TO DB
-            print("in command", self.form_id, " # ", F_instance.ID)
             if F_instance.save_to_db():
                 print(F_instance.ID)
                 return True
