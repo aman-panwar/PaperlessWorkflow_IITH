@@ -1,6 +1,6 @@
 import time
 import json
-from fields import *
+from Model.fields import *
 
 from copy import deepcopy
 class Data:
