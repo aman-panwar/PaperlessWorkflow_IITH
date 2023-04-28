@@ -18,6 +18,8 @@ def handleSubmit(action): # No guarantee that this works, the user_submit functi
     if action == 'approve':
         pass
 
+    return("")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
