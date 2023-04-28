@@ -1,10 +1,10 @@
-from Model.data import Data
-from Model.formMetaData import FormMetaData
-from Model.level import Level
-from Model.database_manager import DbManager
+from data import Data
+from formMetaData import FormMetaData
+from level import Level
+from database_manager import DbManager
 import json
 from datetime import date
-import Model.fields as fields
+import fields as fields
 import json
 from bson.objectid import ObjectId
 import time
@@ -153,6 +153,15 @@ class Form:
         json_dict['version'] = self.version
         return json_dict
 
+
+# f = Form()
+# f.cur_level.approvers_id = ["cs20btech11004@iith.ac.in", "cs20btech11060@iith.ac.in", "es20btech11035@iith.ac.in", "es20btech11026@iith.ac.in"]
+# print(f.save_to_db())
+# from user import User
+# users = ["cs20btech11004@iith.ac.in", "cs20btech11060@iith.ac.in", "es20btech11035@iith.ac.in", "es20btech11026@iith.ac.in"]
+# for x in users:
+#     u = User(x)
+#     u.send_notification(f"This is a test. You have {len(u.pending_forms)} pending forms")
 # def main():
 #     print("hey there")
 #     F_instance = Form(ID='643ff5dd326f4d6638bea447')
