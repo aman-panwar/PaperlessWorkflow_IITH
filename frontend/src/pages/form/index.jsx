@@ -1,17 +1,26 @@
 import Header from '../../components/Header';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, useTheme} from '@mui/material';
+import { tokens } from '../../theme';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext, FormSelectContext } from '../../App';
 import { Navigate } from 'react-router-dom';
+import MenuItem from '@mui/material/MenuItem';
 import Modal from './Modal';
+
+import Date from './fields/Date';
+import File from './fields/File';
+import Check  from './fields/Check';
+import Dropdown from './fields/Dropdown';
+import Text from './fields/Text';
 
 const initialValues = {
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
+    date: "",
 };
 
 // const emailRegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -23,9 +32,12 @@ const formSchema = yup.object().shape({
             // .matches(emailRegExp, "invalid email")
             .email("invalid email")
             .required("required"),
+    date: yup.string().required()
 });
 
 const Form = () => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const { user } = useContext(UserContext);
     const { openFormModal, setOpenFormModal, formType, setFormType } = useContext(FormSelectContext);
@@ -34,6 +46,7 @@ const Form = () => {
         console.log("Submitted Form!")
         console.log(values)
     }
+
 
     return (
         <>
@@ -60,45 +73,13 @@ const Form = () => {
                                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
                             }}
                         >
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="First Name"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.firstName}
-                                name="firstName"
-                                error={!!touched.firstName && !!errors.firstName}
-                                helperText={touched.firstName && errors.firstName}
-                                sx ={{ gridColumn: "span 2" }}
-                            />
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="Last Name"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.lastName}
-                                name="lastName"
-                                error={!!touched.lastName && !!errors.lastName}
-                                helperText={touched.lastName && errors.lastName}
-                                sx ={{ gridColumn: "span 2" }}
-                            />
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="Email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.email}
-                                name="email"
-                                error={!!touched.email && !!errors.email}
-                                helperText={touched.email && errors.email}
-                                sx ={{ gridColumn: "span 4" }}
-                            />
+                            <Text label="First Name"/>
+                            <Text label="Last Name"/>
+                            <Text label="Email"/>
+                            <Date/>
+                            <Check />
+                            <File/>
+                            <Dropdown />
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
                             <Button type="submit" color="secondary" variant="contained" onClick={()=>setFormType(null)}>
