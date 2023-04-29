@@ -40,12 +40,8 @@ class EmailManager(metaclass = SingletonMetaClass):
     def email_function(self):
         """meant to run in a separate thread and send emails every morniing"""
 
-
         now = datetime.now()
         morning_milestone = datetime(year = now.year, month=now.month, day =now.day, hour=0)
-
-        print('runnning email function. next daily update at ',morning_milestone )
-
 
         while(True):
             sleep(60*5)  # sleep for 5 mins, recheck for emails in the queue every 5 min
@@ -59,7 +55,7 @@ class EmailManager(metaclass = SingletonMetaClass):
             self.lock.release()
 
 
-            #sending emails
+            #sending emails in queue
             try: 
                 s = smtplib.SMTP('smtp.gmail.com', 587)
                 s.starttls()
@@ -71,9 +67,7 @@ class EmailManager(metaclass = SingletonMetaClass):
                     msg['Subject'] = "Update from Paperless Workflow App"
                     msg['From'] = "ppwnotification@gmail.com"
                     msg['To'] = email
-                    print('seding mail to ', email)
                     s.sendmail("ppwnotification@gmail.com", email, msg.as_string())
-                    print('sent mail to ', email)
 
             except Exception as e:
                 print('Couldnt send some emails. Error: ', e)
@@ -83,18 +77,15 @@ class EmailManager(metaclass = SingletonMetaClass):
 
             #queuing emails at the start of the day
             if(datetime.now()> morning_milestone):
-                print('runnning daily update')
                 with DbManager().get_client() as c:
                     users = c['PaperlessWorkflow']['Users']
                     search_query ={'notification_freq' : "DAILY"}
                     if morning_milestone.weekday() ==0: #if day is monday, include WEEKLY users as well
                         search_query = {'notification_freq' :{ '$in' : ["DAILY", "WEEKLY"] }} 
                     users_to_notify = users.find(search_query, {'pending_approvals'})
-                    print('users to notify: ')
             
                     for cur_user in users_to_notify:
                         user_id = cur_user['_id']
-                        print('emailing user: ', user_id)
                         with DbManager().get_client() as c:
                             forms = c['PaperlessWorkflow']['Forms']
                             num_of_pending = len([f for f in forms.find({'cur_level.approvers_id':user_id}, {})])
@@ -103,4 +94,3 @@ class EmailManager(metaclass = SingletonMetaClass):
                             self.schedule_email(receiver_email=user_id, content=msg)
 
                 morning_milestone+=timedelta(days=1) # =datetime(morning_milestone.year, morning_milestone.month, morning_milestone.day+1, hour = morning_milestone.hour, minute =morning_milestone.minute)
-                print('next daily update at ', morning_milestone)
