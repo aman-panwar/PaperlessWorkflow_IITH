@@ -1,10 +1,10 @@
-from data import Data
-from formMetaData import FormMetaData
-from level import Level
-from database_manager import DbManager
+from Model.data import Data
+from Model.formMetaData import FormMetaData
+from Model.level import Level
+from Model.database_manager import DbManager
 import json
 from datetime import date
-import fields as fields
+import Model.fields as fields
 import json
 from bson.objectid import ObjectId
 import time
@@ -197,3 +197,6 @@ class Form:
 # print(F.ID)
 # if __name__ == "__main__":
 #     main()
+# f = Form()
+# f.cur_level.approvers_id = ['aman.panwar2002@gmail.com']
+# f.save_to_db()
