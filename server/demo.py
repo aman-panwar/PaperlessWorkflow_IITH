@@ -3,9 +3,21 @@ from flask_cors import CORS
 from Model.user import User
 from Model.formMetaData import FormMetaData
 from Controller.command import *
+from Model.database_manager import DbManager
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 CORS(app)
+
+def get_form_names(form_ids:list):
+    ret = []
+    with DbManager().get_client() as c:
+        forms = c['PaperlessWorkflow']['Forms']
+        for id in form_ids:
+            data_dict = forms.find_one({"_id": ObjectId(id)})
+            ret.append(data_dict['form_meta'].display_name)
+    return ret 
+
 
 @app.route('/login/fetch_data', methods=['GET'])
 def fetch_data():
