@@ -139,7 +139,11 @@ class Form:
             can be accessed using the keys 'level_no', 'field_index', 'time', 'uid', 'field_entry'
 
         """
-        self.data.get_form_state()
+        form_state = self.data.get_form_state()
+        for x in form_state:
+            x['field_entry'] = x['field_entry'].to_dict()
+
+        return form_state
 
     def to_dict(self) -> dict:
         json_dict = {}
