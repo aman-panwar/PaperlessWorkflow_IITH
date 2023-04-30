@@ -54,7 +54,7 @@ const FillForm = () => {
     let formdata = new FormData(event.target);
     formdata = Object.fromEntries(formdata.entries());
     console.log(formdata);
-    axios.post(`${baseURL}/demo/submit`, { 'data': formdata, 'user': user })
+    axios.post(`${baseURL}/demo/submit`, { 'data': formdata, 'user': user, 'form_type': 'leave' })
       .then(response => {
         console.log(response);
       })
