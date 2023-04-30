@@ -42,3 +42,12 @@ handleFormReview = (event) => {
     })
     .catch(error => console.log(error.code))
 }
+
+handleFormRender = (event) => {
+  const formdata = new FormData(event.target);
+  axios.post(`${baseURL}/form/render`, { 'formData': formdata, 'user': user })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => console.log(error.code));
+}
