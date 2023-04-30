@@ -33,7 +33,8 @@ function Login() {
             let userinfo = res.data
             axios.get(`${baseURL}/login/fetch_data`, { 'params': { 'email': res.data.email } })
               .then(response => {
-                userinfo.pending_forms = response.data.pending_forms;
+                userinfo.pending_form_ids = response.data.pending_form_ids;
+                userinfo.pending_form_names = response.data.pending_form_names;
                 console.log(userinfo);
                 setUser(userinfo);
               })

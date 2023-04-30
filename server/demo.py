@@ -16,15 +16,16 @@ def get_form_names(form_ids:list):
         for id in form_ids:
             data_dict = forms.find_one({"_id": ObjectId(id)})
             ret.append(data_dict['form_meta'].display_name)
-    return ret 
+    return ret
 
 
 @app.route('/login/fetch_data', methods=['GET'])
 def fetch_data():
     email = str(request.args.get('email'))
     logged_in_user = User(email=email)
-    pending_forms = logged_in_user.pending_forms
-    response_data = {'pending_forms': pending_forms}
+    pending_form_ids = logged_in_user.pending_forms
+    pending_form_names = get_form_names(pending_form_ids)
+    response_data = {'pending_form_ids': pending_form_ids, 'pending_form_names': pending_form_names}
     return jsonify(response_data)
 
 @app.route('/demo/submit', methods={"POST"})
@@ -41,6 +42,8 @@ def demo_submit():
     val=Accept(_form_id=None,_user_id=app_id,_field_vals=field_vals).user_submit(form_name=form_type)
     response = {"success": val}
     return jsonify(response)
+
+
 
 
 if __name__ == "__main__":
