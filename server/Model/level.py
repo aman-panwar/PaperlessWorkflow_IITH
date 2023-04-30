@@ -1,6 +1,15 @@
 import json
 class Level:
     def __init__(self,_users_id=None,_fields=None,_approvers_id=None,_lvl_no=None, inp_dict = None) -> None:
+        """Constructor for Level class
+
+        Args:
+            _users_id (_type_, optional): The list of all possible users who can make change to this level. Defaults to None.
+            _fields (_type_, optional): The field meta information of this level. Defaults to None.
+            _approvers_id (_type_, optional): the subset of users who are allowed to make changes at this level. Defaults to None.
+            _lvl_no (_type_, optional): Current level number of the form. Defaults to None.
+            inp_dict (_type_, optional): Internal stuff for ORM,dont touch. Defaults to None.
+        """
         if inp_dict==None:
             self.fields=_fields
             self.total_fields=len(_fields) if _fields != None else None

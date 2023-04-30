@@ -1,6 +1,7 @@
-from database_manager import DbManager
-
-
+from Model.database_manager import DbManager
+import smtplib
+from email.message import EmailMessage
+from Model.email_manager import EmailManager
 class User:
     def __init__(self, email: str) -> None:
         data_dict: dict = {} #initilises data from this dict 
@@ -10,10 +11,14 @@ class User:
             if data_dict == None: data_dict = {} #if user is not present already . data is empty
 
             #init submitted forms and pending forms
+            import time
+            start = time.time()
             forms = c['PaperlessWorkflow']['Forms']
             data_dict['submitted_forms'] = [str(f['_id']) for f in forms.find({'applicant_id':email}, {})]
             data_dict['pending_forms'] = [str(f['_id']) for f in forms.find({'cur_level.approvers_id':email}, {})]
-
+            end = time.time()
+            print('get time for ', email, " : ", end-start)
+            
         self.ID = data_dict.setdefault('email', email)
         self.pending_forms = data_dict.setdefault('pending_forms', [])
         self.submitted_forms = data_dict.setdefault('submitted_forms', [])
@@ -64,21 +69,26 @@ class User:
         else:
             raise Exception(
                 f"Invalid role selected. Valid roles are: {valid_options}")
-
-    # def get_user_info() -> dict:
-    #     '''Return the user info as a json dictionary.'''
-    #     pass
-    # def update(changes: dict) -> bool:
-    #     """ Updates the field to the fields provides as json.
-
-    #     Args:
-    #         changes (dict): json with field from User.get_user_info()
-
-    #     Returns:
-    #         bool: true iff the save into database was successful.
-    #     """
-
-
-u = User('aman.panwar2002@gmail.com')
-print('submitted: ', u.submitted_forms)
-print('approvals: ', u.pending_forms)
+    def send_notification(self, message:str):
+        EmailManager().schedule_email(receiver_email=self.ID,
+                                      content=f"You have {len(self.pending_forms)} pending forms")
+        # try:
+        #     msg = EmailMessage()
+        #     msg.set_content(message)
+        #     msg['Subject'] = "Update from Paperless Workflow App"
+        #     msg['From'] = "ppwnotification@gmail.com"
+        #     msg['To'] = self.ID
+    
+        #     s = smtplib.SMTP('smtp.gmail.com', 587)
+        #     s.starttls()
+        #     s.login('ppwnotification@gmail.com', "jqsgxbagdndwkqnp")
+        #     s.sendmail("ppwnotification@gmail.com", self.ID, msg.as_string())
+        #     s.quit()
+        # except:
+        #     return False
+        # return True
+    
+# u = User('aman.panwar2002@gmail.com')
+# u.send_email("test content")
+# print('submitted: ', u.submitted_forms)
+# print('approvals: ', u.pending_forms)
