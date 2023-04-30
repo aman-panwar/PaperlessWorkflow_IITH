@@ -12,28 +12,45 @@ import Table from './pages/table';
 
 import { ColorModeContext, useMode } from './theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
+import { googleLogout } from '@react-oauth/google';
+import { create } from '@mui/material/styles/createTransitions';
 
 // const baseURL = 'http://localhost:5000';
 export const UserContext = createContext();
+export const FormContext = createContext();
+export const SidebarContext = createContext();
 
 function App() {
 
   const [theme, colorMode] = useMode()
   const location = useLocation();
   const isLogin = location.pathname.startsWith('/login');
+  const isFormPage = location.pathname.startsWith('/form');
   const [user, setUser] = useState(null);
-  function logoutUser() { };
-  const [pendingForms, setPendingForms] = useState(null)
-  return (
+
+  const logoutUser = () => {
+        googleLogout();
+        setUser(null);
+  }
+
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [formType, setFormType] = useState(null);
+  const [fillFormInfo, setFillFormInfo] = useState(null);
+  const [selected, setSelected] = useState("Dashboard");
+  const [pendingForms, setPendingForms] = useState(null);
+  
+  return(
     <>
-      <UserContext.Provider value={{ user, setUser, logoutUser, pendingForms, setPendingForms }}>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <div className='app'>
-              {!isLogin && user ? <Sidebar /> : <></>}
-              <main className='content'>
-                {!isLogin && user ? <Topbar /> : <LoginTopbar />}
+    <SidebarContext.Provider value={{selected, setSelected}}>
+    <FormContext.Provider value={{formType, setFormType, openFormModal, setOpenFormModal, fillFormInfo, setFillFormInfo}}>
+    <UserContext.Provider value={{user, setUser, logoutUser, pendingForms, setPendingForms}}>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+          <div className='app'>
+            {!isLogin && user? <Sidebar/> : <></>} 
+            <main className='content'>
+              {!isLogin && user? <Topbar/> : <LoginTopbar/>}
                 <Routes>
                   <Route path="/*" element={<Navigate to="/" />} />
                   <Route path="/" element={<Home />} />
@@ -44,11 +61,13 @@ function App() {
 
                   <Route path="/login" element={<Login />} />
                 </Routes>
-              </main>
-            </div>
-          </ThemeProvider>
-        </ColorModeContext.Provider>
-      </UserContext.Provider>
+            </main>
+          </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+    </UserContext.Provider>
+    </FormContext.Provider>
+    </SidebarContext.Provider>
     </>
   );
 

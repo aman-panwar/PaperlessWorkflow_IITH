@@ -1,122 +1,93 @@
 import Header from '../../components/Header';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, useTheme} from '@mui/material';
+import { tokens } from '../../theme';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useContext } from 'react';
-import { UserContext } from '../../App';
+import { useContext, useState, useEffect, useRef } from 'react';
+import { UserContext, FormContext } from '../../App';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+import MenuItem from '@mui/material/MenuItem';
+import Modal from './Modal';
+import FillForm from './FillForm';
+import Date from './fields/Date';
 
+import axios from 'axios';
 const baseURL = 'http://localhost:5000'
 
 const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: ""
+    firstName: "",
+    lastName: "",
+    email: "",
+    date: "",
 };
 
-// const emailRegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const formSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup
-    .string()
-    // .matches(emailRegExp, "invalid email")
-    .email("invalid email")
-    .required("required"),
+    firstName: yup.string().required("required"),
+    lastName: yup.string().required("required"),
+    email: yup
+            .string()
+            // .matches(emailRegExp, "invalid email")
+            .email("invalid email")
+            .required("required"),
+    date: yup.string().required()
 });
 
 const Form = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const { user } = useContext(UserContext);
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const isNonMobile = useMediaQuery("(min-width:600px)");
+    const { user } = useContext(UserContext);
+    const { openFormModal, setOpenFormModal, formType, setFormType, fillFormInfo, setFillFormInfo } = useContext(FormContext);
+  
+    const handleFormSubmit = (event) => {
+    
+      event.preventDefault();
+      const data = new FormData(event.target);
+      axios.post(`${baseURL}/form/submit`, { "formData": data, "user": user })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error.code);
+        })
+        
+        setFillFormInfo(null);
+        setFormType(null);
+        console.log("Submitted Form!");
+        // event.preventDefault();
+        // const values = new FormData(event.target);
+        
+        // console.log(values);
+        
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.target);
-    axios.post(`${baseURL}/form/submit`, { "formData": data, "user": user })
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error.code);
-      })
-  }
+        // event.preventDefault();
+        // const form = event.target;
+        // const formData = new FormData(form);
+        // const data = Object.fromEntries(formData.entries());
+        // console.log(data);
+    }
 
-  return (
-    <>
-      {!user ? <Navigate to='/login' /> : <></>}
-      <Box m="20px">
-        {/* <Box display="flex" justifyContent="space-between" alignItems="center"> */}
-        <Header title="FORM" subtitle="Enter the details and submit the form." />
-        <br></br>
-        <Formik
-          onSubmit={handleFormSubmit}
-          initialValues={initialValues}
-          validationSchema={formSchema}
-        >
-          {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
-            <form method='post' onSubmit={handleSubmit}>
-              <Box
-                display="grid"
-                gap="30px"
-                gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                sx={{
-                  "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-                }}
-              >
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="First Name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.firstName}
-                  name="firstName"
-                  error={!!touched.firstName && !!errors.firstName}
-                  helperText={touched.firstName && errors.firstName}
-                  sx={{ gridColumn: "span 2" }}
-                />
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Last Name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.lastName}
-                  name="lastName"
-                  error={!!touched.lastName && !!errors.lastName}
-                  helperText={touched.lastName && errors.lastName}
-                  sx={{ gridColumn: "span 2" }}
-                />
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.email}
-                  name="email"
-                  error={!!touched.email && !!errors.email}
-                  helperText={touched.email && errors.email}
-                  sx={{ gridColumn: "span 4" }}
-                />
-              </Box>
-              <Box display="flex" justifyContent="end" mt="20px">
-                <Button type="submit" color="secondary" variant="contained">
-                  Submit Form
-                </Button>
-              </Box>
-            </form>
-          )}
-        </Formik>
-      </Box>
-    </>
-  );
-
+    
+    return (
+        <>
+        {!user ? <Navigate to='/login'/> : <></>}
+        { openFormModal ? 
+        <Modal open={openFormModal} onClose={()=>setOpenFormModal(false)}/>
+        : formType ?
+        <Box m="20px">
+            {/* <Box display="flex" justifyContent="space-between" alignItems="center"> */}
+            <Header title={fillFormInfo['name'].toUpperCase()} subtitle="Enter the details and submit the form."/>
+            <br></br>
+            <Formik>
+                <FillForm/>
+            </Formik>
+        </Box> 
+        :
+        <Navigate to='/'/>
+        }
+        </>
+    );
 }
 
 export default Form;

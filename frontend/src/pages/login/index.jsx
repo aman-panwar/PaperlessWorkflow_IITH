@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { Box, useTheme, Typography } from '@mui/material';
 import { tokens } from '../../theme';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios";
 const baseURL = 'http://localhost:5000';
 
@@ -45,15 +45,6 @@ function Login() {
     },
     [googleUser]
   );
-
-  if (!logoutUser) {
-    logoutUser = () => {
-      googleLogout();
-      setUser(null);
-    }
-  }
-
-
 
   return (
     <>

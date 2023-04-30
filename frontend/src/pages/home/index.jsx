@@ -1,12 +1,15 @@
 import Header from '../../components/Header';
 import { Box } from '@mui/material';
 import { useContext } from 'react';
-import { UserContext } from '../../App';
+import { UserContext, SidebarContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 
 const Home = () => {
 
     const { user } = useContext(UserContext);
+    const { setSelected } = useContext(SidebarContext);
+
+    setSelected("Home");
     return (
         <>
         {!user ? <Navigate to='/login'/> : <></>}
