@@ -15,7 +15,8 @@ def get_form_names(form_ids:list):
         forms = c['PaperlessWorkflow']['Forms']
         for id in form_ids:
             data_dict = forms.find_one({"_id": ObjectId(id)})
-            ret.append(data_dict['form_meta'].display_name)
+            print(data_dict['form_meta'])
+            ret.append(data_dict['form_meta']['display_name'])
     return ret
 
 
