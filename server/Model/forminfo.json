@@ -3,11 +3,11 @@
                     "name"      :   "Leave Form",
                     "n_levels"  :   3,
                     "level_data":   [   {   "users" : [""], 
-                                            "req_fields" : [["Name", "textbox"], ["DOB", "date"], ["MCQ", "dropdown", ["Male", "Female"]]]},
+                                            "req_fields" : [["Name", "Textbox"], ["DOB", "Date"], ["MCQ", "Dropdown", ["Male", "Female"]]]},
                                         {   "users" : ["cs20btech11004@iith.ac.in", "cs20btech11060@iith.ac.in"], 
-                                            "req_fields" : [["Remarks", "textbox"]]}, 
+                                            "req_fields" : [["Remarks", "Textbox"]]}, 
                                         {   "users" : ["es20btech11026@iith.ac.in"], 
-                                            "req_fields" : [["Signature", "file"], ["Remarks", "textbox"]]}
+                                            "req_fields" : [["Signature", "File"], ["Remarks", "Textbox"]]}
                                     ]
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState, createContext} from 'react'
+import React, { useState, createContext } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Topbar from './pages/global/Topbar';
 import LoginTopbar from './pages/login/LoginTopbar'
@@ -27,6 +27,7 @@ function App() {
   const isLogin = location.pathname.startsWith('/login');
   const isFormPage = location.pathname.startsWith('/form');
   const [user, setUser] = useState(null);
+
   const logoutUser = () => {
         googleLogout();
         setUser(null);
@@ -36,12 +37,13 @@ function App() {
   const [formType, setFormType] = useState(null);
   const [fillFormInfo, setFillFormInfo] = useState(null);
   const [selected, setSelected] = useState("Dashboard");
+  const [pendingForms, setPendingForms] = useState(null);
   
   return(
     <>
     <SidebarContext.Provider value={{selected, setSelected}}>
     <FormContext.Provider value={{formType, setFormType, openFormModal, setOpenFormModal, fillFormInfo, setFillFormInfo}}>
-    <UserContext.Provider value={{user, setUser, logoutUser}}>
+    <UserContext.Provider value={{user, setUser, logoutUser, pendingForms, setPendingForms}}>
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline/>
@@ -50,14 +52,14 @@ function App() {
             <main className='content'>
               {!isLogin && user? <Topbar/> : <LoginTopbar/>}
                 <Routes>
-                    <Route path="/*" element={<Navigate to="/"/>} />
-                    <Route path="/" element={<Home/>} />
-                    <Route path="/admin" element={<Admin/>} />
-                    <Route path="/FAQ" element={<FAQ/>} />
-                    <Route path="/form" element={<Form/>} />
-                    <Route path="/table" element={<Table/>} />
+                  <Route path="/*" element={<Navigate to="/" />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/FAQ" element={<FAQ />} />
+                  <Route path="/form" element={<Form />} />
+                  <Route path="/table" element={<Table />} />
 
-                    <Route path="/login" element={<Login/>} />
+                  <Route path="/login" element={<Login />} />
                 </Routes>
             </main>
           </div>
