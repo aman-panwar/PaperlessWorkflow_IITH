@@ -4,17 +4,14 @@ import { tokens } from '../../theme';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useContext, useState } from 'react';
-import { UserContext, FormSelectContext } from '../../App';
+import { useContext, useState, useEffect, useRef } from 'react';
+import { UserContext, FormContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from './Modal';
+import FillForm from './FillForm';
 
 import Date from './fields/Date';
-import File from './fields/File';
-import Check  from './fields/Check';
-import Dropdown from './fields/Dropdown';
-import Text from './fields/Text';
 
 const initialValues = {
     firstName: "",
@@ -40,14 +37,25 @@ const Form = () => {
     const colors = tokens(theme.palette.mode);
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const { user } = useContext(UserContext);
-    const { openFormModal, setOpenFormModal, formType, setFormType } = useContext(FormSelectContext);
+    const { openFormModal, setOpenFormModal, formType, setFormType, fillFormInfo, setFillFormInfo } = useContext(FormContext);
+  
+    const handleFormSubmit = (event) => {
+        console.log("Submitted Form!");
+        // event.preventDefault();
+        // const values = new FormData(event.target);
+        
+        // console.log(values);
+        setFillFormInfo(null);
+        setFormType(null);
 
-    const handleFormSubmit = (values) => {
-        console.log("Submitted Form!")
-        console.log(values)
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        console.log(data);
     }
 
-
+    
     return (
         <>
         {!user ? <Navigate to='/login'/> : <></>}
@@ -56,38 +64,10 @@ const Form = () => {
         : formType ?
         <Box m="20px">
             {/* <Box display="flex" justifyContent="space-between" alignItems="center"> */}
-            <Header title="FORM" subtitle="Enter the details and submit the form."/>
+            <Header title={fillFormInfo['name'].toUpperCase()} subtitle="Enter the details and submit the form."/>
             <br></br>
-            <Formik
-                onSubmit={handleFormSubmit}
-                initialValues={initialValues}
-                validationSchema={formSchema}
-            >
-                {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <Box 
-                            display="grid" 
-                            gap="30px" 
-                            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                            sx = {{
-                                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-                            }}
-                        >
-                            <Text label="First Name"/>
-                            <Text label="Last Name"/>
-                            <Text label="Email"/>
-                            <Date/>
-                            <Check />
-                            <File/>
-                            <Dropdown />
-                        </Box>
-                        <Box display="flex" justifyContent="end" mt="20px">
-                            <Button type="submit" color="secondary" variant="contained" onClick={()=>setFormType(null)}>
-                                Submit Form
-                            </Button>
-                        </Box>
-                    </form>
-                )}
+            <Formik>
+                <FillForm/>
             </Formik>
         </Box> 
         :

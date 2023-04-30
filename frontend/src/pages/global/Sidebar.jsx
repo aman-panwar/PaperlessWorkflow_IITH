@@ -5,7 +5,7 @@ import 'react-pro-sidebar/dist/css/styles.css'
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../theme';
-import { UserContext, FormSelectContext, SidebarContext } from '../../App';
+import { UserContext, FormContext, SidebarContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -36,7 +36,7 @@ const Sidebar = () => {
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const { user } = useContext(UserContext);
-    const { setOpenFormModal } = useContext(FormSelectContext);
+    const { setOpenFormModal } = useContext(FormContext);
     const { selected, setSelected } = useContext(SidebarContext);
 
     const altClickFunc = () => {
@@ -66,7 +66,7 @@ const Sidebar = () => {
                 }
             }}
         >
-        <ProSidebar collapsed={isCollapsed}>
+        <ProSidebar collapsed={isCollapsed} style={{ height:"100vh" }}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem

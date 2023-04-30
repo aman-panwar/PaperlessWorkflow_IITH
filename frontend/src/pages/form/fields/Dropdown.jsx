@@ -1,28 +1,33 @@
 import { useState } from 'react';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const Dropdown = () => {
+const Dropdown = ( { label, options }) => {
 
-    const [dropdown, setDropdown] = useState(null);
+    const [value, setValue] = useState(null);
 
     const handleDropdownChange = (event) => {
-        setDropdown(event.target.value.toString());
+        setValue(event.target.value.toString());
+    }
+
+    const renderMenuItems = () => {
+        const items = []
+        for(let i = 0; i < options.length; i++)
+            items.push(<MenuItem value={options[i]}>{options[i]}</MenuItem>)
+        return items;
     }
 
     return(
-        <FormControl>
-            <InputLabel id="demo-multiple-name-label" color='secondary'>Age</InputLabel>
+        <FormControl sx={{gridColumn: "span 2"}}>
+            <InputLabel id="demo-multiple-name-label" color='secondary'>{label}</InputLabel>
             <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={dropdown}
-                label="Age"
+                // labelId="demo-simple-select-label"
+                // id="demo-simple-select"
+                value={value}
+                label={label}
                 onChange={handleDropdownChange}
                 color='secondary'
             >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {renderMenuItems()}
             </Select>
         </FormControl>
     );

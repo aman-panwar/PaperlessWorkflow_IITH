@@ -17,7 +17,7 @@ import { create } from '@mui/material/styles/createTransitions';
 
 // const baseURL = 'http://localhost:5000';
 export const UserContext = createContext();
-export const FormSelectContext = createContext();
+export const FormContext = createContext();
 export const SidebarContext = createContext();
 
 function App() {
@@ -34,12 +34,13 @@ function App() {
 
   const [openFormModal, setOpenFormModal] = useState(false);
   const [formType, setFormType] = useState(null);
+  const [fillFormInfo, setFillFormInfo] = useState(null);
   const [selected, setSelected] = useState("Dashboard");
   
   return(
     <>
     <SidebarContext.Provider value={{selected, setSelected}}>
-    <FormSelectContext.Provider value={{formType, setFormType, openFormModal, setOpenFormModal}}>
+    <FormContext.Provider value={{formType, setFormType, openFormModal, setOpenFormModal, fillFormInfo, setFillFormInfo}}>
     <UserContext.Provider value={{user, setUser, logoutUser}}>
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -63,7 +64,7 @@ function App() {
       </ThemeProvider>
     </ColorModeContext.Provider>
     </UserContext.Provider>
-    </FormSelectContext.Provider>
+    </FormContext.Provider>
     </SidebarContext.Provider>
     </>
   );

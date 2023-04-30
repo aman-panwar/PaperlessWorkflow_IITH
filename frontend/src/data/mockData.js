@@ -30,11 +30,23 @@ export const mockFormData = {
                                     ]
     },
 
+    "test" :   { 
+        "name"      :   "Test Form",
+        "n_levels"  :   3,
+        "level_data":   [   {   "users" : [""], 
+                                "req_fields" : [["Name", "textbox"]]},
+                            {   "users" : ["cs20btech11004@iith.ac.in", "cs20btech11060@iith.ac.in"], 
+                                "req_fields" : [["Remarks", "textbox"]]}, 
+                            {   "users" : ["es20btech11026@iith.ac.in"], 
+                                "req_fields" : [["Signature", "file"], ["Remarks", "textbox"]]}
+                        ]
+    },
+
     "formA" :   { 
         "name"      :   "Form A",
         "n_levels"  :   3,
         "level_data":   [   {   "users" : [""], 
-                                "req_fields" : [["Name", "textbox"], ["DOB", "date"], ["MCQ", "dropdown", ["Male", "Female"]]]},
+                                "req_fields" : [["Name", "textbox"], ["DOB", "date"], ["I agree to the terms and conditions", "checkbox"], ["Signature", "file"]]},
                             {   "users" : ["cs20btech11004@iith.ac.in", "cs20btech11060@iith.ac.in"], 
                                 "req_fields" : [["Remarks", "textbox"]]}, 
                             {   "users" : ["es20btech11026@iith.ac.in"], 

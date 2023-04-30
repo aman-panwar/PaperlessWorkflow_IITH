@@ -3,17 +3,18 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from '../../theme';
 import { Link } from 'react-router-dom';
 import { useContext, useState } from "react";
-import { FormSelectContext } from "../../App";
+import { FormContext } from "../../App";
 
 
 const ListItem = ({displayName, uniqueName, link}) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode);
-    const { setFormType, setOpenFormModal } = useContext(FormSelectContext);
+    const { setFormType, setOpenFormModal, formType, setFillFormInfo } = useContext(FormContext);
 
     const clickHandler = () => {
         setFormType(uniqueName); 
         setOpenFormModal(false);
+        setFillFormInfo(mockFormData[uniqueName]);
     }
 
     
@@ -52,17 +53,7 @@ const Modal = ({ open, onClose }) => {
     const theme = useTheme()
     const colors = tokens(theme.palette.mode);
     const formtypes = Object.keys(mockFormData); // ['formA', 'formB', 'formC']
-    const [dataSource, setDataSource] = useState(formtypes.slice(0, 6))
-    const fetchMoreData=() => {
-        // Get the current length of the dataSource array
-        const currentLength = dataSource.length;
 
-        // Get the next 6 elements from the formtypes array
-        const nextElements = formtypes.slice(currentLength, currentLength + 6);
-
-        // Update the dataSource state to include the next 6 elements
-        setDataSource([...dataSource, ...nextElements]);
-    }
     if (!open) return null;
     return(
         <>

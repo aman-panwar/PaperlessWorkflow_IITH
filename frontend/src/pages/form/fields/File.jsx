@@ -1,18 +1,31 @@
-import { Input } from '@mui/material';
+import { Input, InputAdornment, IconButton } from '@mui/material';
+import AttachmentIcon from '@mui/icons-material/Attachment';
 
-const File = () => {
+
+const File = ({label}) => {
     return(
+        <>
         <Input
             type="file"
             name="file"
             color='secondary'
-            inputProps={{ multiple: true }}
+            placeholder=""
+            inputProps={{ multiple: true, title: "Upload a file" }}
+            endAdornment={
+                <InputAdornment position="end" >
+                    {label}
+                  <IconButton disableFocusRipple disableRipple style={{cursor: 'auto'}}>
+                    <AttachmentIcon/>
+                  </IconButton>
+                </InputAdornment>
+            }
             sx={{
                 gridColumn: "span 2",
                 padding: "10px",
                 borderRadius: "5px",
             }}  
         />
+        </>
     );
 }
 

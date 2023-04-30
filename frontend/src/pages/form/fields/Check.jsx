@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 
-const Check = () => {
+const Check = ({label}) => {
 
     const [checked, setChecked] = useState(false);
 
@@ -12,7 +12,7 @@ const Check = () => {
     return(
         <FormControlLabel 
             control={<Checkbox defaultChecked={false} color='secondary'/>} 
-            label="I agree to the terms and conditions."
+            label={label}
             value={checked}
             onChange={handleChange} 
             sx ={{ gridColumn: "span 4" }}
