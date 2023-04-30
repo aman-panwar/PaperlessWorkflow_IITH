@@ -10,7 +10,7 @@ CORS(app)
 def handle_submit():
     data=request.json
     formdata=data["formdata"]
-    form_type=data["formdata"]["form_type"]
+    form_type=data["form_type"]
     app_id=data["user_id"]["email"]
     form_meta=FormMetaData(form_type=form_type)
     fields=form_meta.get_level(0)[1]
@@ -27,7 +27,7 @@ def handle_approve():
     formdata=data["formdata"]
     form_remarks=data["remarks"]
     F_id=data["form_id"]
-    form_type=data["formdata"]["form_type"]
+    form_type=data["form_type"]
     app_id=data["user_id"]["email"]
     form_meta=FormMetaData(form_type=form_type)
     fields=form_meta.get_level(0)[1]
