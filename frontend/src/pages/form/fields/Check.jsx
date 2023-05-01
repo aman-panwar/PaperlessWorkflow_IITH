@@ -1,19 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 
-const Check = ({label}) => {
+const Check = ({ label, formData, setFormData }) => {
 
-    const [checked, setChecked] = useState(false);
+    const [value, setValue] = useState(false);
 
-    const handleChange = (newValue) => {
-        setChecked(newValue);
+    useEffect(() => {
+        setFormData({...formData, [label]: value});
+        // console.log(value);
+    }, [value]);
+
+    const handleChange = (e) => {
+        setValue(e.target.checked);
     }
 
     return(
         <FormControlLabel 
             control={<Checkbox defaultChecked={false} color='secondary'/>} 
             label={label}
-            value={checked}
+            value={value}
             onChange={handleChange} 
             sx ={{ gridColumn: "span 4" }}
         />

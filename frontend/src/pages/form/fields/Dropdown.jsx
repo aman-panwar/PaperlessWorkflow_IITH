@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const Dropdown = ( { label, options }) => {
+const Dropdown = ( { label, options, formData, setFormData }) => {
 
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState("");
 
-    const handleDropdownChange = (event) => {
-        setValue(event.target.value.toString());
+    useEffect(() => {
+        setFormData({...formData, [label]: value});
+    }, [value]);
+
+    const handleChange = (e) => {
+        setValue(e.target.value.toString());
     }
 
     const renderMenuItems = () => {
@@ -20,11 +24,9 @@ const Dropdown = ( { label, options }) => {
         <FormControl sx={{gridColumn: "span 2"}}>
             <InputLabel id="demo-multiple-name-label" color='secondary'>{label}</InputLabel>
             <Select
-                // labelId="demo-simple-select-label"
-                // id="demo-simple-select"
                 value={value}
                 label={label}
-                onChange={handleDropdownChange}
+                onChange={handleChange}
                 color='secondary'
             >
                 {renderMenuItems()}

@@ -1,15 +1,27 @@
 import { Input, InputAdornment, IconButton } from '@mui/material';
 import AttachmentIcon from '@mui/icons-material/Attachment';
+import { useState, useEffect } from 'react';
 
+const File = ({ label, formData, setFormData }) => {
 
-const File = ({label}) => {
+    const [value, setValue] = useState({});
+
+    useEffect(() => {
+        console.log(value);
+        setFormData({...formData, [label]: value});
+    }, [value]);
+
+    const handleChange = (e) => {
+        setValue(e.target.files);
+    }
+    
     return(
-        <>
         <Input
+            required
             type="file"
             name="file"
             color='secondary'
-            placeholder=""
+            onChange={handleChange}
             inputProps={{ multiple: true, title: "Upload a file" }}
             endAdornment={
                 <InputAdornment position="end" >
@@ -25,7 +37,6 @@ const File = ({label}) => {
                 borderRadius: "5px",
             }}  
         />
-        </>
     );
 }
 

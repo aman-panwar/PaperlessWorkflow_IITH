@@ -1,25 +1,31 @@
-import { FormControl } from '@mui/material';
+import { FormControl, InputLabel } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const Date = () => {
+const Date = ({ label, formData, setFormData }) => {
 
-  const [date, setDate] = useState(null);
-  const changeDate = (newDate) => {
-    setDate(newDate);
-    console.log(newDate.format('L'));
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    setFormData({...formData, [label]: value});
+  }, [value]);
+
+  const handleChange = (newVal) => {
+    setValue(newVal.toISOString());
+    // setFormData({...formData, [label]: value});
   }
+
   return (
-    <FormControl>
+    <FormControl label="hello" sx={{ gridColumn: "span 1" }}>
       <DatePicker
-        name='DOB'
-        value={date}
-        onChange={changeDate}
+        // name='DOB'
+        label={label}
+        onChange={handleChange}
         color='secondary'
-        sx={{ gridColumn: "span 1" }}
       />
 
     </FormControl>
+
   );
 }
 
