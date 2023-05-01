@@ -125,13 +125,6 @@ const Sidebar = () => {
 
         {/* Navigate to diff pages */}
         <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            {/* <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Extra heading
-            </Typography> */}
             <Item
                 title="Home"
                 to="/home"
@@ -139,13 +132,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected} 
             />
-            <Item
+            {/* <Item
                 title="Admin"
                 to="/admin"
                 icon={<AdminPanelSettingsIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
-            />
+            /> */}
             <Item
                 title="Submit Form"
                 to="/form"
@@ -155,20 +148,33 @@ const Sidebar = () => {
                 altClickFunc={altClickFunc}
             />
             <Item
-                title="Table"
-                to="/table"
-                icon={<ViewListIcon/>}
-                selected={selected}
-                setSelected={setSelected} 
-            />
-            <Item
                 title="FAQ"
                 to="/FAQ"
                 icon={<QuizIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
             />
-            
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              View Forms
+            </Typography>
+            <Item
+                title="Active Forms"
+                to="/active"
+                icon={<ViewListIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+            />
+            <Item
+                title="Past Forms"
+                to="/past"
+                icon={<ViewListIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+            />
         </Box>
         </Menu>
         </ProSidebar>

@@ -8,7 +8,8 @@ import Home from './pages/home'
 import Admin from './pages/admin';
 import FAQ from './pages/FAQ';
 import Form from './pages/form';
-import Table from './pages/table';
+import Active from './pages/tables/Active';
+import Past from './pages/tables/Past';
 
 import { ColorModeContext, useMode } from './theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
@@ -57,8 +58,9 @@ function App() {
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/FAQ" element={<FAQ />} />
                   <Route path="/form" element={<Form />} />
-                  <Route path="/table" element={<Table />} />
-
+                  <Route path="/active" element={<Active />} />
+                  <Route path="/past" element={<Past />} />
+                  
                   <Route path="/login" element={<Login />} />
                 </Routes>
             </main>

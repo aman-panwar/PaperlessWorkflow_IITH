@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 
-const Table = () => {
+const Active = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const { user } = useContext(UserContext);
@@ -52,7 +52,7 @@ const Table = () => {
         {!user ? <Navigate to='/login'/> : <></>}
         <Box m="20px">
             {/* <Box display="flex" justifyContent="space-between" alignItems="center"> */}
-            <Header title="TABLE" subtitle="List of active forms"/>
+            <Header title="ACTIVE FORMS" subtitle="List of active forms."/>
             <Box
                 m="40px 0 0 0"
                 height="75vh"   
@@ -90,4 +90,4 @@ const Table = () => {
     
 }
 
-export default Table;
+export default Active;
