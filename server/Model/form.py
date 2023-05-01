@@ -58,7 +58,6 @@ class Form:
         self.status = data_dict.setdefault('status', None)
         self.version = data_dict.setdefault('version', 0)
 
-
     def save_to_db(self) -> bool:
         """saves the form to db
 

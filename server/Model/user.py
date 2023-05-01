@@ -11,17 +11,20 @@ class User:
             if data_dict == None: data_dict = {} #if user is not present already . data is empty
 
             #init submitted forms and pending forms
-            import time
-            start = time.time()
             forms = c['PaperlessWorkflow']['Forms']
+            data_dict['past_forms'] = []
+            for f in forms.find({'status': {'$in': ["ACCEPTED", "REJECTED"]}}, {'form_meta'}):
+                for  fmeta in f['form_meta']:
+                    for u in fmeta['users']:
+                        if email in u:
+                            data_dict['past_forms'].append(str(f['_id']))
             data_dict['submitted_forms'] = [str(f['_id']) for f in forms.find({'applicant_id':email}, {})]
             data_dict['pending_forms'] = [str(f['_id']) for f in forms.find({'cur_level.approvers_id':email}, {})]
-            end = time.time()
-            print('get time for ', email, " : ", end-start)
             
         self.ID = data_dict.setdefault('email', email)
         self.pending_forms = data_dict.setdefault('pending_forms', [])
         self.submitted_forms = data_dict.setdefault('submitted_forms', [])
+        self.past_forms = data_dict.setdefault('past_forms', [])
         self.notification_freq = data_dict.setdefault('notification_freq', "DAILY")
         self.role = data_dict.setdefault('role', "APPLICANT")
         self.version = data_dict.setdefault('version', 0)
