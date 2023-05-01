@@ -60,7 +60,6 @@ class Accept:
             return False
     
     def user_submit(self,form_name:str):
-        F_instance =Form()
         F_new=Form()
         F_new.form_meta=FormMetaData(form_type=form_name)
         # Initilizing current level in special manner,
@@ -89,10 +88,10 @@ class Accept:
         #POST BACK TO DB
         if(F_new.save_to_db()):
             print(F_new.ID)
-            return True
+            return True, F_new.ID
         else: 
             print("Created form not posted to DB")
-            return False
+            return False, F_new.ID
         
     def notify():
         pass
