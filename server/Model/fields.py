@@ -92,6 +92,8 @@ def FieldFactory(field_type:str, arg_list:list) -> Field:
         field_entry=Textbox(arg_list[0],arg_list[-1])
     elif field_type=="Date":
         field_entry=Date(arg_list[0],arg_list[-1])
+    elif field_type=="Checkbox":
+        field_entry=Checkbox(arg_list[0],arg_list[-1])
     elif field_type=="Dropdown":
         field_entry=Dropdown(arg_list[0],arg_list[1],arg_list[-1])
     elif field_type=="File":
