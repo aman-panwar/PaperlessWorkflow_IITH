@@ -1,14 +1,18 @@
 import { FormControl, InputLabel } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Date = ({ label, formData, setFormData }) => {
 
   const [value, setValue] = useState("");
 
+  useEffect(() => {
+    setFormData({...formData, [label]: value});
+  }, [value]);
+
   const handleChange = (newVal) => {
     setValue(newVal.toISOString());
-    setFormData({...formData, [label]: value});
+    // setFormData({...formData, [label]: value});
   }
 
   return (
