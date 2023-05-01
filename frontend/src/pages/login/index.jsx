@@ -34,8 +34,13 @@ function Login() {
             axios.get(`${baseURL}/login/fetch_data`, { 'params': { 'email': res.data.email } })
               .then(response => {
                 console.log(response.data)
+                // TODO: Retrieve submitted forms names, values, all forms status, and user role
                 userinfo.pending_form_ids = response.data.pending_form_ids;
                 userinfo.pending_form_names = response.data.pending_form_names;
+                userinfo.past_form_ids = response.data.past_form_ids;
+                userinfo.past_form_names = response.data.past_form_names;
+                userinfo.role = response.data.role;
+                userinfo.forms_status = response.data.forms_status;
                 // console.log(userinfo);
                 setUser(userinfo);
               })

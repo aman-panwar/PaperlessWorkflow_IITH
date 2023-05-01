@@ -43,11 +43,18 @@ handleFormReview = (event) => {
     .catch(error => console.log(error.code))
 }
 
-// TODO: figure out how to get form id's from backend when URL is clicked and send them as part of the get request
 handleFormRender = (event) => {
-  axios.get(`${baseURL}/form/render`)
+  const formID = '';
+  axios.get(`${baseURL}/demo/render`, {
+    params: {
+      'formID': formID
+    }
+  })
     .then(response => {
-      console.log(response);
+      const form_data = response.data;
+      console.log(form_data);
     })
     .catch(error => console.log(error.code));
 }
+
+

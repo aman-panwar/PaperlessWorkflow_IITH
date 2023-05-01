@@ -30,7 +30,7 @@ const FillForm = () => {
       if (field === 'textbox')
         item = <Text label={display_name} formData={formData} setFormData={setFormData} />
       else if (field === 'date')
-        item = <Date label={display_name} formData={formData} setFormData={setFormData}/>
+        item = <Date label={display_name} formData={formData} setFormData={setFormData} />
       else if (field === 'dropdown') {
         let options = req_fields[i][2];
         item = <Dropdown label={display_name} options={options} formData={formData} setFormData={setFormData} name="dropdown" />
@@ -63,9 +63,9 @@ const FillForm = () => {
         console.log(error);
       })
 
-      setFillFormInfo(null);
-      setFormType(null);
-      setFormData({});
+    setFillFormInfo(null);
+    setFormType(null);
+    setFormData({});
   }
 
   return (
