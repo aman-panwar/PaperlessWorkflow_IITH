@@ -18,7 +18,9 @@ const FillForm = () => {
   const { user, setUser } = useContext(UserContext);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const req_fields = fillFormInfo['level_data'][0]['req_fields'];
+  const [formData, setFormData] = useState({});
 
+  // Logic to render fields specific to formtype
   const render_elements = () => {
     const elements = []
     for (let i = 0; i < req_fields.length; i++) {
@@ -26,34 +28,33 @@ const FillForm = () => {
       let field = req_fields[i][1];
       let item = <></>;
       if (field === 'textbox')
-        item = <Text label={display_name} name="text" />
+        item = <Text label={display_name} formData={formData} setFormData={setFormData} />
       else if (field === 'date')
-        item = <Date name="date" />
+        item = <Date label={display_name} formData={formData} setFormData={setFormData}/>
       else if (field === 'dropdown') {
         let options = req_fields[i][2];
-        item = <Dropdown label={display_name} options={options} name="dropdown" />
+        item = <Dropdown label={display_name} options={options} formData={formData} setFormData={setFormData} name="dropdown" />
       }
       else if (field === 'file')
-        item = <File label={display_name} name="file" />
+        item = <File label={display_name} formData={formData} setFormData={setFormData} name="file" />
       else if (field === 'checkbox')
-        item = <Check label={display_name} name="checkbox" />
+        item = <Check label={display_name} formData={formData} setFormData={setFormData} name="checkbox" />
 
       elements.push(item);
     }
     return elements;
   }
 
-  const [formData, setFormData] = useState(null);
-
+  // Handles form submission
   const handleFormSubmit = (event) => {
     event.preventDefault();
     console.log("Submitted Form!");
-    setFillFormInfo(null);
-    setFormType(null);
+    console.log(formData)
 
+    // CHANGE formData state object to the backend instead
     let formdata = new FormData(event.target);
     formdata = Object.fromEntries(formdata.entries());
-    console.log(formdata);
+    // console.log(formdata);
     axios.post(`${baseURL}/demo/submit`, { 'data': formdata, 'user': user, 'form_type': 'leave' })
       .then(response => {
         console.log(response);
@@ -62,11 +63,9 @@ const FillForm = () => {
         console.log(error);
       })
 
-    // event.preventDefault();
-    // const form = event.target;
-    // const formData = new FormData(form);
-    // const data = Object.fromEntries(formData.entries());
-    // console.log(data);
+      setFillFormInfo(null);
+      setFormType(null);
+      setFormData({});
   }
 
   return (
