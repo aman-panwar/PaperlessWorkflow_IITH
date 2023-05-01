@@ -29,7 +29,7 @@ def fetch_data():
     response_data = {'pending_form_ids': pending_form_ids, 'pending_form_names': pending_form_names}
     return jsonify(response_data)
 
-@app.route('/demo/submit', methods={"POST"})
+@app.route('/demo/submit', methods=["POST"])
 def demo_submit():
     data=request.json
     formdata=data["data"]
@@ -44,8 +44,19 @@ def demo_submit():
     response = {"success": val}
     return jsonify(response)
 
-
-
+@app.route('/demo/render', methods = ['GET'])
+def handle_render():
+    formID = request.args.get('formID')
+    f = Form(formID)
+    
+    formHistory = f.data.get_form_state()
+    formData = {}
+    for fieldMeta in formHistory:
+        field = fieldMeta['field_entry']
+        fieldName = field.display_name
+        fieldValue = field.value
+        formData[fieldName] = fieldValue
+    return formData
 
 if __name__ == "__main__":
     app.run()
