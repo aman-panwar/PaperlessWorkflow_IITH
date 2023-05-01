@@ -235,3 +235,24 @@ export const mockFormData = {
   },
 
 }
+
+export const mockFilledForm = {
+
+    "leave": {
+        "name": "Leave Form",
+        "n_levels": 3,
+        "level_data": [{
+          "users": [""],
+          "req_fields": [["Name", "textbox"], ["DOB", "date"], ["Gender", "dropdown", ["Male", "Female"]]]
+        },
+        {
+          "users": ["cs20btech11004@iith.ac.in", "cs20btech11060@iith.ac.in"],
+          "req_fields": [["Remarks", "textbox"]]
+        },
+        {
+          "users": ["es20btech11026@iith.ac.in"],
+          "req_fields": [["Signature", "file"], ["Remarks", "textbox"]]
+        }
+        ]
+    }
+}

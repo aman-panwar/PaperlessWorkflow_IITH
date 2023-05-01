@@ -10,6 +10,7 @@ import FAQ from './pages/FAQ';
 import Form from './pages/form';
 import Active from './pages/tables/Active';
 import Past from './pages/tables/Past';
+import ViewForm from './pages/form/ViewForm';
 
 import { ColorModeContext, useMode } from './theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
@@ -60,6 +61,7 @@ function App() {
                   <Route path="/form" element={<Form />} />
                   <Route path="/active" element={<Active />} />
                   <Route path="/past" element={<Past />} />
+                  <Route path="/viewform" element={<OfficerForm />}/>
                   
                   <Route path="/login" element={<Login />} />
                 </Routes>

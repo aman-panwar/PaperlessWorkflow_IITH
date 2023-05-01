@@ -14,6 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 import HomeIcon from '@mui/icons-material/Home';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import FeedIcon from '@mui/icons-material/Feed';
 
 const Item = ( {title, to, icon, selected, setSelected, altClickFunc}) => {
     const theme = useTheme()
@@ -174,6 +175,14 @@ const Sidebar = () => {
                 icon={<ViewListIcon/>}
                 selected={selected}
                 setSelected={setSelected} 
+            />
+            <Item
+                title="View Form"
+                to="/viewform"
+                icon={<FeedIcon/>}
+                selected={selected}
+                setSelected={setSelected} 
+                altClickFunc={altClickFunc}
             />
         </Box>
         </Menu>

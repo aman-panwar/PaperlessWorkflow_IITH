@@ -4,26 +4,23 @@ import { useContext } from 'react';
 import { UserContext, SidebarContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 
-const Home = () => {
-
+const ViewForm = ( {formID} ) => {
     const { user, pendingForms } = useContext(UserContext);
     const { setSelected } = useContext(SidebarContext);
 
-    setSelected("Home");
+    setSelected("View Form");
+    
+    // console.log(pendingForms);
+    // console.log(formID)
+
     return (
         <>
         {!user ? <Navigate to='/login'/> : <></>}
-        <Box m="20px">
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Header
-                    title="HOME"
-                    subtitle="Welcome to your homescreen"
-                />
-            </Box>
-        </Box>
+        {!formID ? <Navigate to='/active'/> : <></>}
         </>
     );
-    
-}
+};
 
-export default Home;
+// ViewForm.defaultProps = { formID: null}
+
+export default ViewForm;

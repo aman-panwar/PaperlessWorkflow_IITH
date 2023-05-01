@@ -1,7 +1,7 @@
 import Header from '../../components/Header';
 import { Box, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../theme';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { mockData } from '../../data/mockData';
 import PersonIcon from '@mui/icons-material/Person';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
@@ -80,9 +80,12 @@ const Past = () => {
                       "& .MuiCheckbox-root": {
                         color: `${colors.greenAccent[200]} !important`,
                       },  
+                      "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                        color: `${colors.grey[100]} !important`,
+                      },
                 }} 
             >
-                <DataGrid rows={mockData} columns={columns}/>
+                <DataGrid rows={mockData} columns={columns} components={{ Toolbar: GridToolbar }}/>
             </Box>
         </Box>
         </>
