@@ -3,16 +3,30 @@ from flask_cors import CORS
 from Model.user import User
 from Model.formMetaData import FormMetaData
 from Controller.command import *
+from Model.database_manager import DbManager
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 CORS(app)
+
+def get_form_names(form_ids:list):
+    ret = []
+    with DbManager().get_client() as c:
+        forms = c['PaperlessWorkflow']['Forms']
+        for id in form_ids:
+            data_dict = forms.find_one({"_id": ObjectId(id)})
+            print(data_dict['form_meta'])
+            ret.append(data_dict['form_meta']['display_name'])
+    return ret
+
 
 @app.route('/login/fetch_data', methods=['GET'])
 def fetch_data():
     email = str(request.args.get('email'))
     logged_in_user = User(email=email)
-    pending_forms = logged_in_user.pending_forms
-    response_data = {'pending_forms': pending_forms}
+    pending_form_ids = logged_in_user.pending_forms
+    pending_form_names = get_form_names(pending_form_ids)
+    response_data = {'pending_form_ids': pending_form_ids, 'pending_form_names': pending_form_names}
     return jsonify(response_data)
 
 @app.route('/demo/submit', methods={"POST"})
@@ -29,6 +43,8 @@ def demo_submit():
     val=Accept(_form_id=None,_user_id=app_id,_field_vals=field_vals).user_submit(form_name=form_type)
     response = {"success": val}
     return jsonify(response)
+
+
 
 
 if __name__ == "__main__":

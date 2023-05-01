@@ -17,9 +17,6 @@ Json strings are useful for other Classes tho.
 
 """All updates to db follow optimistic concurrency control"""
 
-"""DONT FUCK AROUND WITH VERSION. I WILL MAKE IT PRIVATE IN LATER STAGES"""
-
-
 class Form:
 
     def __init__(self, ID: str = None, inp_dict: dict = None) -> None:
