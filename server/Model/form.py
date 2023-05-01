@@ -75,7 +75,7 @@ class Form:
             if self.ID == None:
                 db_result = forms.insert_one(my_data)
                 my_data['_id'] = db_result.inserted_id
-                self.ID = db_result.inserted_id
+                #self.ID = db_result.inserted_id
             else:
                 search_field = {}
                 search_field['_id'] = ObjectId(self.ID)
@@ -84,8 +84,8 @@ class Form:
                     db_result = forms.replace_one(search_field, my_data, upsert=True)
                 except Exception as e:
                     return False
-                my_data['_id'] = db_result.upserted_id
-                self.ID = db_result.upserted_id
+                my_data['_id'] = self.ID
+                #self.ID = db_result.upserted_id
             self.init_with_dict(my_data)
             return db_result.acknowledged
 
