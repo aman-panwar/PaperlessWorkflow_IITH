@@ -215,9 +215,9 @@ def test_submit_review_then_accept(print_info=False):
 
 def main():
     #Default is false ,set to true to view form details aftter all tests are done
-    test_submit_approve_accept(print_info=False)
-    test_submit_reject()
-    test_submit_review_then_accept()
+    test_submit_approve_accept(print_info=True)
+    test_submit_reject(print_info=True)
+    test_submit_review_then_accept(print_info=True)
     
 
     #Stray cleanup code

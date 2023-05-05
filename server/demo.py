@@ -46,7 +46,7 @@ def demo_submit():
     val, id=Accept(_form_id=None,_user_id=app_id,_field_vals=field_vals).user_submit(form_name=form_type)
     
     if val == True:#sending emails
-        f = Form(Id= id)
+        f = Form(id)
         for email in f.cur_level.approvers_id:
             u =User(email=email)
             u.send_notification("You have a new form to approve")

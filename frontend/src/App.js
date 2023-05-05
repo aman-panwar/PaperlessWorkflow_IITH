@@ -61,7 +61,7 @@ function App() {
                   <Route path="/form" element={<Form />} />
                   <Route path="/active" element={<Active />} />
                   <Route path="/past" element={<Past />} />
-                  <Route path="/viewform" element={<OfficerForm />}/>
+                  <Route path="/viewform" element={<ViewForm />}/>
                   
                   <Route path="/login" element={<Login />} />
                 </Routes>
