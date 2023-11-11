@@ -1,7 +1,7 @@
 # PaperlessWorkflow_IITH
 Paperless Workflow website for IITH
 
-Contributors:
+Contributors:\
 Aman Panwar - CS20BTECH11004\
 Ojjas Tyagi - CS20BTECH11060\
 Shreya Kumar - ES20BTECH11026\
